@@ -15,7 +15,24 @@
 <body>
     <div id="map"></div>
     <div class="map-overlay">
-        <div class="map-overlay-inner"></div>
+        <div class="map-overlay-inner">
+            <h1>Weekly Coronavirus Cases in London</h1>
+            <div class="selection">
+                <input type="radio" id="cases-per-100000" checked name="group-type" value="cases-per-100000">
+                <label for="cases-per-100000">Weekly Cases Per 100,000<br class="mobile-break"></label>
+                <br>
+                <input type="radio" id="weekly-cases" name="group-type" value="weekly-cases">
+                <label for="weekly-cases">Number of Weekly Cases<br class="mobile-break"></label>
+                <br>
+                <input type="radio" id="difference" name="group-type" value="difference">
+                <label for="difference">Difference from Previous Week</label> <br class="mobile-break"></label>
+                <br>
+                <input type="radio" id="total-cases" name="group-type" value="total-cases">
+                <label for="total-cases">Total Number of Cases<br class="mobile-break"></label>
+           
+            </div>
+            <div id="information"></div>
+        </div>
     </div>
     <script src='https://api.mapbox.com/mapbox-gl-js/v1.12.0/mapbox-gl.js'></script>
     <script type="module" src="coronavirus_map.js"></script>
