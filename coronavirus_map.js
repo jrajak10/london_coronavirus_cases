@@ -12,7 +12,7 @@ let map = new mapboxgl.Map({
     maxZoom: 17,
     style: vectorUrl + '/resources/styles?key=' + API_KEY,
     center: [-0.1318827, 51.5158643],
-    zoom: 8,
+    zoom: 9,
     transformRequest: url => {
         if (! /[?&]key=/.test(url)) url += '?key=' + API_KEY
         return {

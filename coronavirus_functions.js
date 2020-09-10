@@ -35,25 +35,6 @@ function addBoroughsOutline(map, id, boroughPolygons, lineWidth) {
     });
 }
 
-function addChoroplethLayer(map, id, boroughPolygons) {
-    map.addLayer({
-        "id": id,
-        "type": "fill",
-        "source": {
-            "type": "geojson",
-            "data": {
-                "type": "FeatureCollection",
-                "features": boroughPolygons
-            }
-        },
-        "layout": {},
-        "paint": {
-            "fill-color": '#FFF',
-            "fill-opacity": 0.6
-        }
-    });
-}
-
 
 function getInformation(currentBorough, coronaData){
     for(let i=0; i<coronaData.length; i++){
@@ -80,9 +61,72 @@ function selectBorough(map, coronaData){
             }
             map.getSource('current-borough').setData(currentBoroughData)
         }
-       getInformation(currentBorough, coronaData);      
+       getInformation(currentBorough, coronaData); 
     });
 };
+
+//LARGE_VALUE is anything greater than the MEDIUM_VALUE
+const CASES_PROPORTION_COLORS = {
+    "MIN_VALUE": 9,
+    "MIN_COLOR": "#ffe6e6",
+    "SMALL_VALUE": 18,
+    "SMALL_COLOR": "#ff8080",
+    "MEDIUM_VALUE": 27,
+    "MEDIUM_COLOR": "#ff1a1a",
+    "LARGE_COLOR": "#8b0000"
+}
+
+/**
+ * 
+ * @param {*Object[]} 
+ * @param {*Object} 
+ * @param {*Object} 
+ */
+function calculateCountyColors(coronaData, CASES_PROPORTION_COLORS) {
+    
+    let boroughColors = [];
+    let color;
+
+    for(let i=0; i<coronaData.length; i++){
+        let borough = coronaData[i]["Borough"];
+        let cases = coronaData[i]["Cases per 100,000 in Past Week"];
+        if(cases < CASES_PROPORTION_COLORS["MIN_VALUE"]){
+            color = CASES_PROPORTION_COLORS["MIN_COLOR"];
+        }
+        else if(cases >= CASES_PROPORTION_COLORS["MIN_VALUE"] && cases < CASES_PROPORTION_COLORS["SMALL_VALUE"]){
+            color = CASES_PROPORTION_COLORS["SMALL_COLOR"];
+        }
+        else if(cases >= CASES_PROPORTION_COLORS["SMALL_VALUE"] && cases < CASES_PROPORTION_COLORS["MEDIUM_VALUE"]){
+            color = CASES_PROPORTION_COLORS["MEDIUM_COLOR"];
+        }
+        else {
+            color = CASES_PROPORTION_COLORS["LARGE_COLOR"];
+        }
+        boroughColors.push(borough, color);
+    }
+    boroughColors.push("#000");
+    return boroughColors;
+}
+
+function addChoroplethLayer(map, id, boroughPolygons, expression) {
+    map.addLayer({
+        "id": id,
+        "type": "fill",
+        "source": {
+            "type": "geojson",
+            "data": {
+                "type": "FeatureCollection",
+                "features": boroughPolygons
+            }
+        },
+        "layout": {},
+        "paint": {
+            "fill-color": expression,
+            "fill-opacity": 0.6
+        }
+    });
+}
+
 
 
 function addMapFeatures(map) {
@@ -94,6 +138,12 @@ function addMapFeatures(map) {
         showCompass: false
     }));
 
+    map.on('mouseenter', 'boroughs', function(e){
+        map.getCanvas().style.cursor = 'pointer';
+    });
+    map.on('mouseleave', 'boroughs', function(e){
+        map.getCanvas().style.cursor = '';
+    });
    
 
 
@@ -104,8 +154,14 @@ function addMapFeatures(map) {
         let boroughPolygons = await fetchData('london_boroughs.json');
         let coronaData = await fetchData('london_corona_31_Aug.json')
 
-        console.log(coronaData)
-        addChoroplethLayer(map, 'boroughs', boroughPolygons)
+        
+        calculateCountyColors(coronaData, CASES_PROPORTION_COLORS);
+
+        // expression gives the colours for the map based on its value
+        let expression = ['match', ['get', 'NAME']];
+        const CASES_EXPRESSION = expression.concat(calculateCountyColors(coronaData, CASES_PROPORTION_COLORS));
+        addChoroplethLayer(map, 'boroughs', boroughPolygons, CASES_EXPRESSION);
+
         addBoroughsOutline(map, 'boroughs-outline', boroughPolygons, 3); 
         selectBorough(map, coronaData)
     });
