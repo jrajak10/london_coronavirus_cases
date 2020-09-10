@@ -90,7 +90,6 @@ function addMapFeatures(map) {
         addChoroplethLayer(map, 'boroughs', boroughPolygons)
         addBoroughsOutline(map, 'boroughs-outline', boroughPolygons, 3);
         
-
     });
 
 }
