@@ -4,11 +4,17 @@ body {
 }
 
 .map-overlay {
-    position: fixed;
-    bottom: 0;
-    width: 100%;
+    font: 14px/20px 'Helvetica Neue', Arial, Helvetica, sans-serif !important;
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 200px;
+    width: 300px !important;
+    padding: 20px;
+    margin: 0px 10px;
     display: flex;
-    flex-direction: column;
+    flex-direction: column-reverse;
+    justify-content: flex-end;
 }
 
 .map-overlay-inner {
@@ -25,4 +31,17 @@ body {
     top:0; 
     bottom:0; 
     width:100%; 
+}
+
+h1 {
+    font-size: 24px;
+    font-weight: bold;
+}
+
+#information {
+    font-weight: bold;
+}
+
+.mobile-break{
+    display: none;
 }
