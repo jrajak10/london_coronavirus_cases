@@ -80,7 +80,6 @@ function selectBorough(map, coronaData){
             }
             map.getSource('current-borough').setData(currentBoroughData)
         }
-       
        getInformation(currentBorough, coronaData);      
     });
 };
