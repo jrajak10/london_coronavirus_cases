@@ -45,3 +45,97 @@ h1 {
 .mobile-break{
     display: none;
 }
+
+h4 {
+    font-size: 15px;
+}
+
+.legend{
+    padding-top: 10px
+}
+
+.legend div span{
+    display: inline-block;
+    margin-right: 5px;
+    border: solid 1px #000;
+    height: 10px;
+    width: 10px;
+}
+
+#large-cases-per-100000-values{
+    background-color: #8b0000;
+}
+#medium-cases-per-100000-values{
+    background-color: #ff1a1a;
+}
+
+#small-cases-per-100000-values{
+    background-color: #ff8080;
+}
+
+#min-cases-per-100000-values{
+    background-color: #ffe6e6;
+}
+
+#weekly-cases-legend{
+    display: none;
+}
+
+#large-weekly-cases-values{ 
+    background-color: #592d86;
+}
+
+#medium-weekly-cases-values{
+    background-color: #8c53c6;
+}
+
+#small-weekly-cases-values{
+    background-color: #bf9fdf;
+}
+
+#min-weekly-cases-values{
+    background-color: #f2ecf9;
+}
+
+#weekly-difference-legend{
+    display: none;
+}
+
+#large-weekly-difference-values{ 
+    background-color: #F00;
+}
+
+#medium-weekly-difference-values{
+    background-color: #FFBF00;
+}
+
+#small-weekly-difference-values{
+    background-color: #FF0;
+}
+
+#min-weekly-difference-values{
+    background-color: #00ab66;
+}
+
+#total-legend{
+    display: none;
+}
+
+#large-total-values{ 
+    background-color: #663300;
+}
+
+#medium-total-values{
+    background-color: #e67300;
+}
+
+#small-total-values{
+    background-color: #ffb366;
+}
+
+#min-total-values{
+    background-color: #fff2e6;
+}
+
+
+

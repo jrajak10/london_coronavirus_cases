@@ -148,15 +148,26 @@ function addChoroplethLayer(map, id, boroughPolygons, expression) {
     });
 }
 
-function toggleLayers(map, currentLayer, inactiveLayer1, inactiveLayer2, inactiveLayer3) {
+
+function toggleLegend(map, currentLegend, inactiveLegend1, inactiveLegend2, inactiveLegend3){
+    const INACTIVE_LEGENDS = [inactiveLegend1, inactiveLegend2, inactiveLegend3];
+    document.getElementById(currentLegend).style.display = 'block';
+    INACTIVE_LEGENDS.map(legend => document.getElementById(legend).style.display = 'none');
+}
+
+function toggleLayers(map, currentLayer, inactiveLayer1, inactiveLayer2, inactiveLayer3, 
+    currentLegend, inactiveLegend1, inactiveLegend2, inactiveLegend3) {
     const INACTIVE_LAYERS = [inactiveLayer1, inactiveLayer2, inactiveLayer3];
     const ACTIVE_LAYERS = [currentLayer];
     
     document.getElementById(currentLayer).addEventListener('click', function () {
         INACTIVE_LAYERS.map(layer => map.setLayoutProperty(layer, 'visibility', 'none'));
         ACTIVE_LAYERS.map(layer => map.setLayoutProperty(layer, 'visibility', 'visible'));
+        toggleLegend(map, currentLegend, inactiveLegend1, inactiveLegend2, inactiveLegend3)
     });
 }
+
+
 
 function formatCursor(map, layer){
     map.on('mouseenter', layer, function(e){
@@ -187,8 +198,8 @@ function addMapFeatures(map) {
         // expression gives the colours for the map based on its value
         let expression = ['match', ['get', 'NAME']];
         const CASES_EXPRESSION = expression.concat(calculateCountyColors(coronaData, CASES_PROPORTION_COLORS, "Cases per 100,000 in Past Week"));
-        addChoroplethLayer(map, 'cases-per-100,000', boroughPolygons, CASES_EXPRESSION);
-        selectBorough(map, coronaData, 'cases-per-100,000', "Cases per 100,000 in Past Week", "Weekly Cases per 100,000")
+        addChoroplethLayer(map, 'cases-per-100000', boroughPolygons, CASES_EXPRESSION);
+        selectBorough(map, coronaData, 'cases-per-100000', "Cases per 100,000 in Past Week", "Weekly Cases per 100,000")
 
         const WEEKLY_EXPRESSION = expression.concat(calculateCountyColors(coronaData, WEEKLY_COLORS, "Cases in Last Week"));
         addChoroplethLayer(map, 'weekly-cases', boroughPolygons, WEEKLY_EXPRESSION);
@@ -206,14 +217,18 @@ function addMapFeatures(map) {
         selectBorough(map, coronaData, 'total-cases', "Total Cases", "Total Number of Cases")
         map.setLayoutProperty('total-cases', 'visibility', 'none');
 
-        toggleLayers(map, 'cases-per-100,000', 'weekly-cases', 'difference', 'total-cases');
-        toggleLayers(map, 'weekly-cases', 'cases-per-100,000', 'difference', 'total-cases');
-        toggleLayers(map, 'difference', 'weekly-cases', 'cases-per-100,000', 'total-cases');
-        toggleLayers(map, 'total-cases', 'difference', 'weekly-cases', 'cases-per-100,000');
+        toggleLayers(map, 'cases-per-100000', 'weekly-cases', 'difference', 'total-cases', 
+        "cases-per-100000-legend", "weekly-cases-legend", "weekly-difference-legend", "total-legend");
+        toggleLayers(map, 'weekly-cases', 'cases-per-100000', 'difference', 'total-cases', 
+        "weekly-cases-legend", "cases-per-100000-legend", "weekly-difference-legend", "total-legend");
+        toggleLayers(map, 'difference', 'weekly-cases', 'cases-per-100000', 'total-cases', 
+        "weekly-difference-legend", "cases-per-100000-legend", "weekly-cases-legend", "total-legend");
+        toggleLayers(map, 'total-cases', 'difference', 'weekly-cases', 'cases-per-100000',
+         "total-legend", "cases-per-100000-legend", "weekly-cases-legend", "weekly-difference-legend",);
 
         addBoroughsOutline(map, 'boroughs-outline', boroughPolygons, 3); 
 
-        formatCursor(map, 'cases-per-100,000');
+        formatCursor(map, 'cases-per-100000');
         formatCursor(map, 'weekly-cases');
         formatCursor(map, 'difference');
         formatCursor(map, 'total-cases');     
