@@ -47,8 +47,8 @@ function getInformation(currentBorough, coronaData){
     }
 }
 
-function selectBorough(map, coronaData){
-    map.on('click', 'boroughs', function(e){
+function selectBorough(map, coronaData, id){
+    map.on('click', id, function(e){
         let currentBorough = e.features;
         
         if (!map.getLayer('current-borough')) {
@@ -76,31 +76,41 @@ const CASES_PROPORTION_COLORS = {
     "LARGE_COLOR": "#8b0000"
 }
 
+const WEEKLY_COLORS = {
+    "MIN_VALUE": 30,
+    "MIN_COLOR": "#f2ecf9",
+    "SMALL_VALUE": 60,
+    "SMALL_COLOR": "#bf9fdf",
+    "MEDIUM_VALUE": 90,
+    "MEDIUM_COLOR": "#8c53c6",
+    "LARGE_COLOR": "#592d86"
+}
+
 /**
  * 
  * @param {*Object[]} 
  * @param {*Object} 
  * @param {*Object} 
  */
-function calculateCountyColors(coronaData, CASES_PROPORTION_COLORS) {
+function calculateCountyColors(coronaData, colorObject, data) {
     
     let boroughColors = [];
     let color;
 
     for(let i=0; i<coronaData.length; i++){
         let borough = coronaData[i]["Borough"];
-        let cases = coronaData[i]["Cases per 100,000 in Past Week"];
-        if(cases < CASES_PROPORTION_COLORS["MIN_VALUE"]){
-            color = CASES_PROPORTION_COLORS["MIN_COLOR"];
+        let objectData = coronaData[i][data];
+        if(objectData < colorObject["MIN_VALUE"]){
+            color = colorObject["MIN_COLOR"];
         }
-        else if(cases >= CASES_PROPORTION_COLORS["MIN_VALUE"] && cases < CASES_PROPORTION_COLORS["SMALL_VALUE"]){
-            color = CASES_PROPORTION_COLORS["SMALL_COLOR"];
+        else if(objectData >= colorObject["MIN_VALUE"] && objectData < colorObject["SMALL_VALUE"]){
+            color = colorObject["SMALL_COLOR"];
         }
-        else if(cases >= CASES_PROPORTION_COLORS["SMALL_VALUE"] && cases < CASES_PROPORTION_COLORS["MEDIUM_VALUE"]){
-            color = CASES_PROPORTION_COLORS["MEDIUM_COLOR"];
+        else if(objectData >= colorObject["SMALL_VALUE"] && objectData < colorObject["MEDIUM_VALUE"]){
+            color = colorObject["MEDIUM_COLOR"];
         }
         else {
-            color = CASES_PROPORTION_COLORS["LARGE_COLOR"];
+            color = colorObject["LARGE_COLOR"];
         }
         boroughColors.push(borough, color);
     }
@@ -155,15 +165,20 @@ function addMapFeatures(map) {
         let coronaData = await fetchData('london_corona_31_Aug.json')
 
         
-        calculateCountyColors(coronaData, CASES_PROPORTION_COLORS);
+        
 
         // expression gives the colours for the map based on its value
         let expression = ['match', ['get', 'NAME']];
-        const CASES_EXPRESSION = expression.concat(calculateCountyColors(coronaData, CASES_PROPORTION_COLORS));
-        addChoroplethLayer(map, 'boroughs', boroughPolygons, CASES_EXPRESSION);
+        const CASES_EXPRESSION = expression.concat(calculateCountyColors(coronaData, CASES_PROPORTION_COLORS, "Cases per 100,000 in Past Week"));
+        addChoroplethLayer(map, 'cases-per-100,000', boroughPolygons, CASES_EXPRESSION);
+        selectBorough(map, coronaData, 'cases-per-100,000')
+
+        const WEEKLY_EXPRESSION = expression.concat(calculateCountyColors(coronaData, WEEKLY_COLORS, "Cases in Last Week"));
+        addChoroplethLayer(map, 'weekly-cases', boroughPolygons, WEEKLY_EXPRESSION);
+        selectBorough(map, coronaData, 'weekly-cases')
 
         addBoroughsOutline(map, 'boroughs-outline', boroughPolygons, 3); 
-        selectBorough(map, coronaData)
+        
     });
 
 }
