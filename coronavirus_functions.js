@@ -179,19 +179,10 @@ function addMapFeatures(map) {
     }));
 
     
-    
-   
-
-
-
-
     map.on('load', async function () {
         //Fetches the polygons of all the London Boroughs. 
         let boroughPolygons = await fetchData('london_boroughs.json');
         let coronaData = await fetchData('london_corona_31_Aug.json')
-
-        
-        
 
         // expression gives the colours for the map based on its value
         let expression = ['match', ['get', 'NAME']];
@@ -225,8 +216,7 @@ function addMapFeatures(map) {
         formatCursor(map, 'cases-per-100,000');
         formatCursor(map, 'weekly-cases');
         formatCursor(map, 'difference');
-        formatCursor(map, 'cases-per-100,000');
-        
+        formatCursor(map, 'total-cases');     
     });
 
 }
