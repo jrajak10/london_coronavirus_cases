@@ -27,18 +27,18 @@ function addBoroughsOutline(map, id, boroughPolygons, lineWidth) {
 }
 
 
-function getInformation(currentBorough, coronaData, data){
+function getInformation(currentBorough, coronaData, data, variable){
     for(let i=0; i<coronaData.length; i++){
         let borough = coronaData[i]["Borough"]
         let weeklyCases = coronaData[i][data];
         if(currentBorough[0].properties["NAME"] === borough){
             document.getElementById("information").innerHTML = "Borough: " + borough + 
-            "<br>Weekly Cases per 100,000: " + weeklyCases
+            "<br>" + variable + ": " + weeklyCases
         }
     }
 }
 
-function selectBorough(map, coronaData, id, data){
+function selectBorough(map, coronaData, id, data, variable){
     map.on('click', id, function(e){
         let currentBorough = e.features;
         
@@ -52,7 +52,7 @@ function selectBorough(map, coronaData, id, data){
             }
             map.getSource('current-borough').setData(currentBoroughData)
         }
-       getInformation(currentBorough, coronaData, data); 
+       getInformation(currentBorough, coronaData, data, variable); 
     });
 };
 
@@ -188,22 +188,22 @@ function addMapFeatures(map) {
         let expression = ['match', ['get', 'NAME']];
         const CASES_EXPRESSION = expression.concat(calculateCountyColors(coronaData, CASES_PROPORTION_COLORS, "Cases per 100,000 in Past Week"));
         addChoroplethLayer(map, 'cases-per-100,000', boroughPolygons, CASES_EXPRESSION);
-        selectBorough(map, coronaData, 'cases-per-100,000', "Cases per 100,000 in Past Week")
+        selectBorough(map, coronaData, 'cases-per-100,000', "Cases per 100,000 in Past Week", "Weekly Cases per 100,000")
 
         const WEEKLY_EXPRESSION = expression.concat(calculateCountyColors(coronaData, WEEKLY_COLORS, "Cases in Last Week"));
         addChoroplethLayer(map, 'weekly-cases', boroughPolygons, WEEKLY_EXPRESSION);
-        selectBorough(map, coronaData, 'weekly-cases', "Cases in Last Week")
+        selectBorough(map, coronaData, 'weekly-cases', "Cases in Last Week", "Number of Cases from 31st Aug - 6th Sep")
         map.setLayoutProperty('weekly-cases', 'visibility', 'none');
 
         const DIFFERENCE_EXPRESSION = expression.concat(calculateCountyColors(coronaData, WEEKLY_DIFFERENCE_COLORS, "Difference From Previous Week"));
         addChoroplethLayer(map, 'difference', boroughPolygons, DIFFERENCE_EXPRESSION);
-        selectBorough(map, coronaData, 'difference', "Difference From Previous Week")
+        selectBorough(map, coronaData, 'difference', "Difference From Previous Week", "Difference from Previous Week")
         map.setLayoutProperty('difference', 'visibility', 'none');
 
         const TOTAL_CASES_EXPRESSION = expression.concat(calculateCountyColors(coronaData, TOTAL_COLORS, "Total Cases"));
         console.log(TOTAL_CASES_EXPRESSION)
         addChoroplethLayer(map, 'total-cases', boroughPolygons, TOTAL_CASES_EXPRESSION);
-        selectBorough(map, coronaData, 'total-cases', "Total Cases")
+        selectBorough(map, coronaData, 'total-cases', "Total Cases", "Total Number of Cases")
         map.setLayoutProperty('total-cases', 'visibility', 'none');
 
         toggleLayers(map, 'cases-per-100,000', 'weekly-cases', 'difference', 'total-cases');
