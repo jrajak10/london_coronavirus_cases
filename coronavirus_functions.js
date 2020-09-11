@@ -8,15 +8,6 @@ async function fetchData(data) {
     return features
 }
 
-
-//function that formats the cursor when hovering over a marker
-function formatCursor(cursor, map) {
-    event.preventDefault();
-    map.getCanvas().style.cursor = cursor;
-    event.stopPropagation();
-}
-
-
 function addBoroughsOutline(map, id, boroughPolygons, lineWidth) {
     map.addLayer({
         'id': id,
@@ -36,10 +27,10 @@ function addBoroughsOutline(map, id, boroughPolygons, lineWidth) {
 }
 
 
-function getInformation(currentBorough, coronaData){
+function getInformation(currentBorough, coronaData, data){
     for(let i=0; i<coronaData.length; i++){
         let borough = coronaData[i]["Borough"]
-        let weeklyCases = coronaData[i]["Cases per 100,000 in Past Week"];
+        let weeklyCases = coronaData[i][data];
         if(currentBorough[0].properties["NAME"] === borough){
             document.getElementById("information").innerHTML = "Borough: " + borough + 
             "<br>Weekly Cases per 100,000: " + weeklyCases
@@ -47,7 +38,7 @@ function getInformation(currentBorough, coronaData){
     }
 }
 
-function selectBorough(map, coronaData, id){
+function selectBorough(map, coronaData, id, data){
     map.on('click', id, function(e){
         let currentBorough = e.features;
         
@@ -61,7 +52,7 @@ function selectBorough(map, coronaData, id){
             }
             map.getSource('current-borough').setData(currentBoroughData)
         }
-       getInformation(currentBorough, coronaData); 
+       getInformation(currentBorough, coronaData, data); 
     });
 };
 
@@ -84,6 +75,26 @@ const WEEKLY_COLORS = {
     "MEDIUM_VALUE": 90,
     "MEDIUM_COLOR": "#8c53c6",
     "LARGE_COLOR": "#592d86"
+}
+
+const WEEKLY_DIFFERENCE_COLORS = {
+    "MIN_VALUE": 5,
+    "MIN_COLOR": "#00ab66",
+    "SMALL_VALUE": 20,
+    "SMALL_COLOR": "#FF0",
+    "MEDIUM_VALUE": 35,
+    "MEDIUM_COLOR": "#FFBF00",
+    "LARGE_COLOR": "#F00"
+}
+
+const TOTAL_COLORS = {
+    "MIN_VALUE": 900,
+    "MIN_COLOR": "#fff2e6",
+    "SMALL_VALUE": 1350,
+    "SMALL_COLOR": "#ffb366",
+    "MEDIUM_VALUE": 1800,
+    "MEDIUM_COLOR": "#e67300",
+    "LARGE_COLOR": "#663300"
 }
 
 /**
@@ -137,6 +148,25 @@ function addChoroplethLayer(map, id, boroughPolygons, expression) {
     });
 }
 
+function toggleLayers(map, currentLayer, inactiveLayer1, inactiveLayer2, inactiveLayer3) {
+    const INACTIVE_LAYERS = [inactiveLayer1, inactiveLayer2, inactiveLayer3];
+    const ACTIVE_LAYERS = [currentLayer];
+    
+    document.getElementById(currentLayer).addEventListener('click', function () {
+        INACTIVE_LAYERS.map(layer => map.setLayoutProperty(layer, 'visibility', 'none'));
+        ACTIVE_LAYERS.map(layer => map.setLayoutProperty(layer, 'visibility', 'visible'));
+    });
+}
+
+function formatCursor(map, layer){
+    map.on('mouseenter', layer, function(e){
+        map.getCanvas().style.cursor = 'pointer';
+    });
+    map.on('mouseleave', layer, function(e){
+        map.getCanvas().style.cursor = '';
+    });
+}
+
 
 
 function addMapFeatures(map) {
@@ -148,12 +178,8 @@ function addMapFeatures(map) {
         showCompass: false
     }));
 
-    map.on('mouseenter', 'boroughs', function(e){
-        map.getCanvas().style.cursor = 'pointer';
-    });
-    map.on('mouseleave', 'boroughs', function(e){
-        map.getCanvas().style.cursor = '';
-    });
+    
+    
    
 
 
@@ -171,14 +197,33 @@ function addMapFeatures(map) {
         let expression = ['match', ['get', 'NAME']];
         const CASES_EXPRESSION = expression.concat(calculateCountyColors(coronaData, CASES_PROPORTION_COLORS, "Cases per 100,000 in Past Week"));
         addChoroplethLayer(map, 'cases-per-100,000', boroughPolygons, CASES_EXPRESSION);
-        selectBorough(map, coronaData, 'cases-per-100,000')
+        selectBorough(map, coronaData, 'cases-per-100,000', "Cases per 100,000 in Past Week")
 
         const WEEKLY_EXPRESSION = expression.concat(calculateCountyColors(coronaData, WEEKLY_COLORS, "Cases in Last Week"));
         addChoroplethLayer(map, 'weekly-cases', boroughPolygons, WEEKLY_EXPRESSION);
-        selectBorough(map, coronaData, 'weekly-cases')
+        selectBorough(map, coronaData, 'weekly-cases', "Cases in Last Week")
+        map.setLayoutProperty('weekly-cases', 'visibility', 'none');
+
+        const DIFFERENCE_EXPRESSION = expression.concat(calculateCountyColors(coronaData, WEEKLY_DIFFERENCE_COLORS, "Difference From Previous Week"));
+        addChoroplethLayer(map, 'difference', boroughPolygons, DIFFERENCE_EXPRESSION);
+        selectBorough(map, coronaData, 'difference', "Difference From Previous Week")
+        map.setLayoutProperty('difference', 'visibility', 'none');
+
+        const TOTAL_CASES_EXPRESSION = expression.concat(calculateCountyColors(coronaData, TOTAL_COLORS, "Total Cases"));
+        console.log(TOTAL_CASES_EXPRESSION)
+        addChoroplethLayer(map, 'total-cases', boroughPolygons, TOTAL_CASES_EXPRESSION);
+        selectBorough(map, coronaData, 'total-cases', "Total Cases")
+        map.setLayoutProperty('total-cases', 'visibility', 'none');
+
+        toggleLayers(map, 'cases-per-100,000', 'weekly-cases', 'difference', 'total-cases');
+        toggleLayers(map, 'weekly-cases', 'cases-per-100,000', 'difference', 'total-cases');
+        toggleLayers(map, 'difference', 'weekly-cases', 'cases-per-100,000', 'total-cases');
+        toggleLayers(map, 'total-cases', 'difference', 'weekly-cases', 'cases-per-100,000');
 
         addBoroughsOutline(map, 'boroughs-outline', boroughPolygons, 3); 
-        
+
+        formatCursor(map, 'cases-per-100,000');
+        formatCursor(map, 'weekly-cases');
     });
 
 }
