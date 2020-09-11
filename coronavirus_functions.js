@@ -224,6 +224,9 @@ function addMapFeatures(map) {
 
         formatCursor(map, 'cases-per-100,000');
         formatCursor(map, 'weekly-cases');
+        formatCursor(map, 'difference');
+        formatCursor(map, 'cases-per-100,000');
+        
     });
 
 }
