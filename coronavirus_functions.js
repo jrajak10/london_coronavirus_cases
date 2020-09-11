@@ -149,7 +149,7 @@ function addChoroplethLayer(map, id, boroughPolygons, expression) {
 }
 
 
-function toggleLegend(map, currentLegend, inactiveLegend1, inactiveLegend2, inactiveLegend3){
+function toggleLegend(currentLegend, inactiveLegend1, inactiveLegend2, inactiveLegend3){
     const INACTIVE_LEGENDS = [inactiveLegend1, inactiveLegend2, inactiveLegend3];
     document.getElementById(currentLegend).style.display = 'block';
     INACTIVE_LEGENDS.map(legend => document.getElementById(legend).style.display = 'none');
@@ -163,7 +163,7 @@ function toggleLayers(map, currentLayer, inactiveLayer1, inactiveLayer2, inactiv
     document.getElementById(currentLayer).addEventListener('click', function () {
         INACTIVE_LAYERS.map(layer => map.setLayoutProperty(layer, 'visibility', 'none'));
         ACTIVE_LAYERS.map(layer => map.setLayoutProperty(layer, 'visibility', 'visible'));
-        toggleLegend(map, currentLegend, inactiveLegend1, inactiveLegend2, inactiveLegend3)
+        toggleLegend(currentLegend, inactiveLegend1, inactiveLegend2, inactiveLegend3)
     });
 }
 
