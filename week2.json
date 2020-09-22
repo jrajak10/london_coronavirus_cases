@@ -1,0 +1,228 @@
+{
+    "features" : [
+    {
+      "Borough": "Barking and Dagenham",
+      "Cases per 100,000 in Past Week": 32,
+      "Cases in Last Week": 69,
+      "Difference From Previous Week": 7,
+      "Total Cases": 1007
+    },
+    {
+      "Borough": "Barnet",
+      "Cases per 100,000 in Past Week": 21,
+      "Cases in Last Week": 83,
+      "Difference From Previous Week": -16,
+      "Total Cases": 2077
+    },
+    {
+      "Borough": "Bexley",
+      "Cases per 100,000 in Past Week": 13,
+      "Cases in Last Week": 32,
+      "Difference From Previous Week": 11,
+      "Total Cases": 1241
+    },
+    {
+      "Borough": "Brent",
+      "Cases per 100,000 in Past Week": 23,
+      "Cases in Last Week": 77,
+      "Difference From Previous Week": 19,
+      "Total Cases": 2087
+    },
+    {
+      "Borough": "Bromley",
+      "Cases per 100,000 in Past Week": 14,
+      "Cases in Last Week": 47,
+      "Difference From Previous Week": -4,
+      "Total Cases": 1755
+    },
+    {
+      "Borough": "Camden",
+      "Cases per 100,000 in Past Week": 23,
+      "Cases in Last Week": 62,
+      "Difference From Previous Week": 28,
+      "Total Cases": 938
+    },
+    {
+      "Borough": "Croydon",
+      "Cases per 100,000 in Past Week": 15,
+      "Cases in Last Week": 58,
+      "Difference From Previous Week": -9,
+      "Total Cases": 2134
+    },
+    {
+      "Borough": "Ealing",
+      "Cases per 100,000 in Past Week": 29,
+      "Cases in Last Week": 99,
+      "Difference From Previous Week": 30,
+      "Total Cases": 1996
+    },
+    {
+      "Borough": "Enfield",
+      "Cases per 100,000 in Past Week": 30,
+      "Cases in Last Week": 101,
+      "Difference From Previous Week": 33,
+      "Total Cases": 1541
+    },
+    {
+      "Borough": "Greenwich",
+      "Cases per 100,000 in Past Week": 18,
+      "Cases in Last Week": 52,
+      "Difference From Previous Week": 20,
+      "Total Cases": 1163
+    },
+    {
+      "Borough": "Hackney",
+      "Cases per 100,000 in Past Week": 29,
+      "Cases in Last Week": 83,
+      "Difference From Previous Week": 30,
+      "Total Cases": 1331
+    },
+    {
+      "Borough": "Hammersmith and Fulham",
+      "Cases per 100,000 in Past Week": 29,
+      "Cases in Last Week": 53,
+      "Difference From Previous Week": 4,
+      "Total Cases": 1031
+    },
+    {
+      "Borough": "Haringey",
+      "Cases per 100,000 in Past Week": 26,
+      "Cases in Last Week": 69,
+      "Difference From Previous Week": 11,
+      "Total Cases": 1066
+    },
+    {
+      "Borough": "Harrow",
+      "Cases per 100,000 in Past Week": 25,
+      "Cases in Last Week": 62,
+      "Difference From Previous Week": 1,
+      "Total Cases": 1589
+    },
+    {
+      "Borough": "Havering",
+      "Cases per 100,000 in Past Week": 30,
+      "Cases in Last Week": 77,
+      "Difference From Previous Week": -3,
+      "Total Cases": 1279
+    },
+    {
+      "Borough": "Hillingdon",
+      "Cases per 100,000 in Past Week": 19,
+      "Cases in Last Week": 57,
+      "Difference From Previous Week": -4,
+      "Total Cases": 1437
+    },
+    {
+      "Borough": "Hounslow",
+      "Cases per 100,000 in Past Week": 37,
+      "Cases in Last Week": 100,
+      "Difference From Previous Week": 24,
+      "Total Cases": 1482
+    },
+    {
+      "Borough": "Islington",
+      "Cases per 100,000 in Past Week": 17,
+      "Cases in Last Week": 41,
+      "Difference From Previous Week": -10,
+      "Total Cases": 762
+    },
+    {
+      "Borough": "Kensington and Chelsea",
+      "Cases per 100,000 in Past Week": 24,
+      "Cases in Last Week": 38,
+      "Difference From Previous Week": -13,
+      "Total Cases": 788
+    },
+    {
+      "Borough": "Kingston upon Thames",
+      "Cases per 100,000 in Past Week": 17,
+      "Cases in Last Week": 31,
+      "Difference From Previous Week": 5,
+      "Total Cases": 894
+    },
+    {
+      "Borough": "Lambeth",
+      "Cases per 100,000 in Past Week": 22,
+      "Cases in Last Week": 71,
+      "Difference From Previous Week": -3,
+      "Total Cases": 1746
+    },
+    {
+      "Borough": "Lewisham",
+      "Cases per 100,000 in Past Week": 18,
+      "Cases in Last Week": 54,
+      "Difference From Previous Week": 4,
+      "Total Cases": 1457
+    },
+    {
+      "Borough": "Merton",
+      "Cases per 100,000 in Past Week": 17,
+      "Cases in Last Week": 35,
+      "Difference From Previous Week": 9,
+      "Total Cases": 1097
+    },
+    {
+      "Borough": "Newham",
+      "Cases per 100,000 in Past Week": 27,
+      "Cases in Last Week": 96,
+      "Difference From Previous Week": -6,
+      "Total Cases": 1698
+    },
+    {
+      "Borough": "Redbridge",
+      "Cases per 100,000 in Past Week": 38,
+      "Cases in Last Week": 117,
+      "Difference From Previous Week": 24,
+      "Total Cases": 1532
+    },
+    {
+      "Borough": "Richmond upon Thames",
+      "Cases per 100,000 in Past Week": 19,
+      "Cases in Last Week": 38,
+      "Difference From Previous Week": 4,
+      "Total Cases": 732
+    },
+    {
+      "Borough": "Southwark",
+      "Cases per 100,000 in Past Week": 21,
+      "Cases in Last Week": 66,
+      "Difference From Previous Week": 7,
+      "Total Cases": 1779
+    },
+    {
+      "Borough": "Sutton",
+      "Cases per 100,000 in Past Week": 12,
+      "Cases in Last Week": 24,
+      "Difference From Previous Week": 0,
+      "Total Cases": 1141
+    },
+    {
+      "Borough": "Tower Hamlets",
+      "Cases per 100,000 in Past Week": 25,
+      "Cases in Last Week": 82,
+      "Difference From Previous Week": -1,
+      "Total Cases": 1191
+    },
+    {
+      "Borough": "Waltham Forest",
+      "Cases per 100,000 in Past Week": 24,
+      "Cases in Last Week": 66,
+      "Difference From Previous Week": 26,
+      "Total Cases": 1301
+    },
+    {
+      "Borough": "Wandsworth",
+      "Cases per 100,000 in Past Week": 25,
+      "Cases in Last Week": 84,
+      "Difference From Previous Week": 20,
+      "Total Cases": 1591
+    },
+    {
+      "Borough": "Westminster",
+      "Cases per 100,000 in Past Week": 16,
+      "Cases in Last Week": 43,
+      "Difference From Previous Week": -10,
+      "Total Cases": 1065
+    }
+   ]
+}
