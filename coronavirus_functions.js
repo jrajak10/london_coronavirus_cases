@@ -193,7 +193,7 @@ function addMapFeatures(map) {
     map.on('load', async function () {
         //Fetches the polygons of all the London Boroughs. 
         let boroughPolygons = await fetchData('london_boroughs.json');
-        let coronaData = await fetchData('london_corona_31_Aug.json')
+        let coronaData = await fetchData('week2.json')
 
         // expression gives the colours for the map based on its value
         let expression = ['match', ['get', 'NAME']];
