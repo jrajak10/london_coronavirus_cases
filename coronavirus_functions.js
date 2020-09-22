@@ -43,7 +43,7 @@ function selectBorough(map, coronaData, id, data, variable){
         let currentBorough = e.features;
         
         if (!map.getLayer('current-borough')) {
-            addBoroughsOutline(map, 'current-borough', currentBorough, 7);
+            addBoroughsOutline(map, 'current-borough', currentBorough, 5);
         }
         else {
             let currentBoroughData = {
@@ -193,7 +193,15 @@ function addMapFeatures(map) {
     map.on('load', async function () {
         //Fetches the polygons of all the London Boroughs. 
         let boroughPolygons = await fetchData('london_boroughs.json');
-        let coronaData = await fetchData('week2.json')
+        let coronaData = await fetchData('week2.json');
+
+        //merge Hackney and City of London
+        let hackney = boroughPolygons.filter(x => x.properties["NAME"] === "Hackney")[0]
+        let city = boroughPolygons.filter(x => x.properties["NAME"] === "City of London")[0]
+        let hackneyAndCity = turf.union(hackney, city)
+        boroughPolygons = boroughPolygons.filter(x => x.properties["NAME"] !== "Hackney" && x.properties["NAME"] !== "City of London")
+        boroughPolygons.push(hackneyAndCity)
+        boroughPolygons[31].properties["NAME"] = "Hackney and City of London"
 
         // expression gives the colours for the map based on its value
         let expression = ['match', ['get', 'NAME']];
@@ -212,7 +220,6 @@ function addMapFeatures(map) {
         map.setLayoutProperty('difference', 'visibility', 'none');
 
         const TOTAL_CASES_EXPRESSION = expression.concat(calculateCountyColors(coronaData, TOTAL_COLORS, "Total Cases"));
-        console.log(TOTAL_CASES_EXPRESSION)
         addChoroplethLayer(map, 'total-cases', boroughPolygons, TOTAL_CASES_EXPRESSION);
         selectBorough(map, coronaData, 'total-cases', "Total Cases", "Total Number of Cases")
         map.setLayoutProperty('total-cases', 'visibility', 'none');
@@ -226,7 +233,7 @@ function addMapFeatures(map) {
         toggleLayers(map, 'total-cases', 'difference', 'weekly-cases', 'cases-per-100000',
          "total-legend", "cases-per-100000-legend", "weekly-cases-legend", "weekly-difference-legend",);
 
-        addBoroughsOutline(map, 'boroughs-outline', boroughPolygons, 3); 
+        addBoroughsOutline(map, 'boroughs-outline', boroughPolygons, 2.5); 
 
         formatCursor(map, 'cases-per-100000');
         formatCursor(map, 'weekly-cases');
