@@ -34,43 +34,74 @@ function getInformation(currentBorough, coronaData, data, variable) {
         if (currentBorough[0].properties["NAME"] === borough) {
             document.getElementById("information").innerHTML = "Borough: " + borough +
                 "<br>" + variable + ": " + weeklyCases
-            
-        createChart(weeklyCases, variable)
+
+        }
+    }
+}
+
+async function getWeeks(currentBorough, data) {
+    let week1 = await fetchData('week1.json');
+    let week2 = await fetchData('week2.json');
+    let arr = [];
+    let weeks = week1.concat(week2)
+
+    for (let i = 0; i < weeks.length; i++) {
+        let borough = weeks[i]["Borough"]
+        let weeklyCases = weeks[i][data];
+        if (currentBorough[0].properties["NAME"] === borough) {
+            arr.push(weeklyCases);
         }
     }
 
+    return arr;
 }
 
-function createChart(data, variable) {
-    let ctx = document.getElementById('myChart').getContext('2d');
-    let myChart = new Chart(ctx, {
+function newChart(ctx, variable, previousWeeks) {
+    let chart = new Chart(ctx, {
         type: 'bar',
         data: {
-            labels: ['Aug 31-Sep 6'],
+            labels: ['Aug 31-Sep 6', 'Sep 7-Sep 13'],
             datasets: [{
                 label: variable,
-                data: [data],
+                data: previousWeeks,
                 backgroundColor: '#bababa',
                 borderColor: '#000',
                 borderWidth: 1
-            }]
+            }],
+            responsive: true
         },
         options: {
             scales: {
                 yAxes: [{
                     ticks: {
-                        beginAtZero: false
+                        beginAtZero: true
                     }
                 }]
             }
         }
     });
+    return chart
 }
 
-function selectBorough(map, coronaData, id, data, variable) {
+
+async function createChart(currentBorough, data, variable) {
+    let previousWeeks = await getWeeks(currentBorough, data);
+
+    let ctx = document.getElementById('myChart').getContext('2d');
+    
+    
+    let chart;
+    
+    chart = newChart(ctx, variable, previousWeeks);
+    
+    return chart
+}
+
+
+async function selectBorough(map, coronaData, id, data, variable) {
     map.on('click', id, function (e) {
         let currentBorough = e.features;
-        
+
 
         if (!map.getLayer('current-borough')) {
             addBoroughsOutline(map, 'current-borough', currentBorough, 5);
@@ -83,6 +114,7 @@ function selectBorough(map, coronaData, id, data, variable) {
             map.getSource('current-borough').setData(currentBoroughData)
         }
         getInformation(currentBorough, coronaData, data, variable);
+        createChart(currentBorough, data, variable)
     });
 };
 
@@ -242,7 +274,7 @@ function addMapFeatures(map) {
 
         const WEEKLY_EXPRESSION = expression.concat(calculateCountyColors(coronaData, WEEKLY_COLORS, "Cases in Last Week"));
         addChoroplethLayer(map, 'weekly-cases', boroughPolygons, WEEKLY_EXPRESSION);
-        selectBorough(map, coronaData, 'weekly-cases', "Cases in Last Week", "Number of Cases from 7th Sep - 14th Sep")
+        selectBorough(map, coronaData, 'weekly-cases', "Cases in Last Week", "Number of Cases from 7th Sep - 13th Sep")
         map.setLayoutProperty('weekly-cases', 'visibility', 'none');
 
         const DIFFERENCE_EXPRESSION = expression.concat(calculateCountyColors(coronaData, WEEKLY_DIFFERENCE_COLORS, "Difference From Previous Week"));
@@ -271,7 +303,7 @@ function addMapFeatures(map) {
         formatCursor(map, 'difference');
         formatCursor(map, 'total-cases');
 
-        
+
         createChart()
 
     });
