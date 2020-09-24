@@ -40,7 +40,7 @@ function getInformation(currentBorough, coronaData, data, variable) {
 }
 
 async function getWeeks(currentBorough, data) {
-    let weeks = ['week1.json', 'week2.json']
+    let weeks = ['week1.json', 'week2.json', 'week3.json']
     for (let i=0; i<weeks.length; i++){
        weeks[i] = await fetchData(weeks[i]);
     }
@@ -82,7 +82,7 @@ function newChart(ctx, variable, previousWeeks, MAX_CHART_VALUES) {
     let chart = new Chart(ctx, {
         type: 'bar',
         data: {
-            labels: ['Aug 31-Sep 6', 'Sep 7-Sep 13'],
+            labels: ['Aug 31-Sep 6', 'Sep 7-Sep 13', 'Sep 14-Sep 20'],
             datasets: [{
                 label: variable,
                 data: previousWeeks,
@@ -284,7 +284,7 @@ function addMapFeatures(map) {
     map.on('load', async function () {
         //Fetches the polygons of all the London Boroughs. 
         let boroughPolygons = await fetchData('london_boroughs.json');
-        let coronaData = await fetchData('week2.json');
+        let coronaData = await fetchData('week3.json');
 
         //merge Hackney and City of London
         let hackney = boroughPolygons.filter(x => x.properties["NAME"] === "Hackney")[0]
@@ -302,7 +302,7 @@ function addMapFeatures(map) {
 
         const WEEKLY_EXPRESSION = expression.concat(calculateCountyColors(coronaData, WEEKLY_COLORS, "Cases in Last Week"));
         addChoroplethLayer(map, 'weekly-cases', boroughPolygons, WEEKLY_EXPRESSION);
-        selectBorough(map, coronaData, 'weekly-cases', "Cases in Last Week", "Number of Cases from 7th Sep - 13th Sep")
+        selectBorough(map, coronaData, 'weekly-cases', "Cases in Last Week", "Number of Cases from 14th Sep - 20th Sep")
         map.setLayoutProperty('weekly-cases', 'visibility', 'none');
 
         const DIFFERENCE_EXPRESSION = expression.concat(calculateCountyColors(coronaData, WEEKLY_DIFFERENCE_COLORS, "Difference From Previous Week"));
@@ -330,9 +330,6 @@ function addMapFeatures(map) {
         formatCursor(map, 'weekly-cases');
         formatCursor(map, 'difference');
         formatCursor(map, 'total-cases');
-
-
-        createChart()
 
     });
 }
