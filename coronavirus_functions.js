@@ -40,11 +40,12 @@ function getInformation(currentBorough, coronaData, data, variable) {
 }
 
 async function getWeeks(currentBorough, data) {
-    let week1 = await fetchData('week1.json');
-    let week2 = await fetchData('week2.json');
+    let weeks = ['week1.json', 'week2.json']
+    for (let i=0; i<weeks.length; i++){
+       weeks[i] = await fetchData(weeks[i]);
+    }
+    weeks = weeks.flat()
     let arr = [];
-    let weeks = week1.concat(week2)
-
     for (let i = 0; i < weeks.length; i++) {
         let borough = weeks[i]["Borough"]
         let weeklyCases = weeks[i][data];
@@ -56,7 +57,28 @@ async function getWeeks(currentBorough, data) {
     return arr;
 }
 
-function newChart(ctx, variable, previousWeeks) {
+const MAX_CHART_VALUES = {
+    "cases-per-100000": 50,
+    "weekly-cases": 200,
+    "difference": 75,
+    "total-cases": 2500
+}
+
+function setMaxValue(MAX_CHART_VALUES){
+    let keys = Object.keys(MAX_CHART_VALUES)
+    let maxValue = 100
+    for(let i=0; i<keys.length; i++){
+        let id = '#' + keys[i] + ':checked'
+        if (document.querySelector(id) !== null){
+            maxValue = MAX_CHART_VALUES[keys[i]]
+        }
+    }
+      return maxValue;
+}
+
+function newChart(ctx, variable, previousWeeks, MAX_CHART_VALUES) {
+    let val = setMaxValue(MAX_CHART_VALUES);
+    
     let chart = new Chart(ctx, {
         type: 'bar',
         data: {
@@ -67,14 +89,14 @@ function newChart(ctx, variable, previousWeeks) {
                 backgroundColor: '#bababa',
                 borderColor: '#000',
                 borderWidth: 1
-            }],
-            responsive: true
+            }]
         },
         options: {
             scales: {
                 yAxes: [{
                     ticks: {
-                        beginAtZero: true
+                        beginAtZero: true,
+                        suggestedMax: val
                     }
                 }]
             }
@@ -84,24 +106,25 @@ function newChart(ctx, variable, previousWeeks) {
 }
 
 
-async function createChart(currentBorough, data, variable) {
+async function createChart(currentBorough, data, variable, MAX_CHART_VALUES) {
     let previousWeeks = await getWeeks(currentBorough, data);
 
+    //add new div so charts don't overlap
+    let node = document.createElement("canvas");
+    node.setAttribute("id", "myChart");
+    node.setAttribute("style", "display: block")
+    document.getElementById("chart").appendChild(node);
     let ctx = document.getElementById('myChart').getContext('2d');
     
-    
-    let chart;
-    
-    chart = newChart(ctx, variable, previousWeeks);
+    let chart = newChart(ctx, variable, previousWeeks, MAX_CHART_VALUES);
     
     return chart
 }
 
 
-async function selectBorough(map, coronaData, id, data, variable) {
+function selectBorough(map, coronaData, id, data, variable) {
     map.on('click', id, function (e) {
         let currentBorough = e.features;
-
 
         if (!map.getLayer('current-borough')) {
             addBoroughsOutline(map, 'current-borough', currentBorough, 5);
@@ -114,7 +137,12 @@ async function selectBorough(map, coronaData, id, data, variable) {
             map.getSource('current-borough').setData(currentBoroughData)
         }
         getInformation(currentBorough, coronaData, data, variable);
-        createChart(currentBorough, data, variable)
+
+        //remove current canvas to avoid overlapping
+        let chartDiv = document.getElementById("chart");
+        let canvas = document.getElementById("myChart");
+        chartDiv.removeChild(canvas);
+        createChart(currentBorough, data, variable, MAX_CHART_VALUES);
     });
 };
 
@@ -140,9 +168,9 @@ const WEEKLY_COLORS = {
 }
 
 const WEEKLY_DIFFERENCE_COLORS = {
-    "MIN_VALUE": 5,
+    "MIN_VALUE": 0,
     "MIN_COLOR": "#00ab66",
-    "SMALL_VALUE": 20,
+    "SMALL_VALUE": 17,
     "SMALL_COLOR": "#FF0",
     "MEDIUM_VALUE": 35,
     "MEDIUM_COLOR": "#FFBF00",
