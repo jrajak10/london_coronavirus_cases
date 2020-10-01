@@ -39,7 +39,7 @@ function getInformation(currentBorough, coronaData, data, variable) {
 }
 
 async function getWeeks(currentBorough, data) {
-    let weeks = ['week1.json', 'week2.json', 'week3.json']
+    let weeks = ['week1.json', 'week2.json', 'week3.json', 'week4.json']
     for (let i=0; i<weeks.length; i++){
        weeks[i] = await fetchData(weeks[i]);
     }
@@ -101,23 +101,33 @@ function newChart(ctx, VARIABLES, previousWeeks, MAX_CHART_VALUES) {
     let chart = new Chart(ctx, {
         type: 'bar',
         data: {
-            labels: ['Aug 31-Sep 6', 'Sep 7-Sep 13', 'Sep 14-Sep 20'],
+            labels: [['Aug 31-', 'Sep 6'], ['Sep 7-', 'Sep 13'], ['Sep 14-', 'Sep 20'], ['Sep 21-', 'Sep 27']],
             datasets: [{
                 label: setVariables(VARIABLES),
                 data: previousWeeks,
                 backgroundColor: '#bababa',
                 borderColor: '#000',
-                borderWidth: 1
-            }]
+                borderWidth: 1,
+                barPercentage: 0.5
+            }],
+            responsive: true
         },
         options: {
+            responsive: true,
             scales: {
                 yAxes: [{
                     ticks: {
                         beginAtZero: true,
                         suggestedMax: val
                     }
-                }]
+                }],
+                xAxes: [{
+                    barPercentage: 0.5,
+                    ticks: {
+                        autoSkip: true,
+                        maxTicksLimit: 2
+                    }
+                }],
             }
         }
     });
@@ -189,7 +199,7 @@ const WEEKLY_COLORS = {
 const WEEKLY_DIFFERENCE_COLORS = {
     "MIN_VALUE": 0,
     "MIN_COLOR": "#00ab66",
-    "SMALL_VALUE": 17,
+    "SMALL_VALUE": 18,
     "SMALL_COLOR": "#FF0",
     "MEDIUM_VALUE": 35,
     "MEDIUM_COLOR": "#FFBF00",
@@ -303,7 +313,7 @@ function addMapFeatures(map) {
     map.on('load', async function () {
         //Fetches the polygons of all the London Boroughs. 
         let boroughPolygons = await fetchData('london_boroughs.json');
-        let coronaData = await fetchData('week3.json');
+        let coronaData = await fetchData('week4.json');
         //merge Hackney and City of London
         let hackney = boroughPolygons.filter(x => x.properties["NAME"] === "Hackney")[0]
         let city = boroughPolygons.filter(x => x.properties["NAME"] === "City of London")[0]
