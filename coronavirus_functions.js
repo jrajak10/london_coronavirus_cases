@@ -39,7 +39,7 @@ function getInformation(currentBorough, coronaData, data, variable) {
 }
 
 async function getWeeks(currentBorough, data) {
-    let weeks = ['week1.json', 'week2.json', 'week3.json', 'week4.json']
+    let weeks = ['week1.json', 'week2.json', 'week3.json', 'week4.json', 'week5.json']
     for (let i=0; i<weeks.length; i++){
        weeks[i] = await fetchData(weeks[i]);
     }
@@ -57,10 +57,10 @@ async function getWeeks(currentBorough, data) {
 }
 
 const MAX_CHART_VALUES = {
-    "cases-per-100000": 50,
-    "weekly-cases": 200,
-    "difference": 75,
-    "total-cases": 2500
+    "cases-per-100000": 120,
+    "weekly-cases": 350,
+    "difference": 200,
+    "total-cases": 3000
 }
 
 function setMaxValue(MAX_CHART_VALUES){
@@ -101,7 +101,8 @@ function newChart(ctx, VARIABLES, previousWeeks, MAX_CHART_VALUES) {
     let chart = new Chart(ctx, {
         type: 'bar',
         data: {
-            labels: [['Aug 31-', 'Sep 6'], ['Sep 7-', 'Sep 13'], ['Sep 14-', 'Sep 20'], ['Sep 21-', 'Sep 27']],
+            labels: [['Aug 31-', 'Sep 6'], ['Sep 7-', 'Sep 13'], ['Sep 14-', 'Sep 20'], ['Sep 21-', 'Sep 27'], 
+                    ['Sep 28-', 'Oct 4']],
             datasets: [{
                 label: setVariables(VARIABLES),
                 data: previousWeeks,
@@ -122,7 +123,6 @@ function newChart(ctx, VARIABLES, previousWeeks, MAX_CHART_VALUES) {
                     }
                 }],
                 xAxes: [{
-                    barPercentage: 0.5,
                     ticks: {
                         autoSkip: true,
                         maxTicksLimit: 2
@@ -177,21 +177,21 @@ function selectBorough(map, coronaData, id, data, variable) {
 
 //LARGE_VALUE is anything greater than the MEDIUM_VALUE
 const CASES_PROPORTION_COLORS = {
-    "MIN_VALUE": 9,
+    "MIN_VALUE": 60,
     "MIN_COLOR": "#ffe6e6",
-    "SMALL_VALUE": 18,
+    "SMALL_VALUE": 75,
     "SMALL_COLOR": "#ff8080",
-    "MEDIUM_VALUE": 27,
+    "MEDIUM_VALUE": 90,
     "MEDIUM_COLOR": "#ff1a1a",
     "LARGE_COLOR": "#8b0000"
 }
 
 const WEEKLY_COLORS = {
-    "MIN_VALUE": 30,
+    "MIN_VALUE": 140,
     "MIN_COLOR": "#f2ecf9",
-    "SMALL_VALUE": 60,
+    "SMALL_VALUE": 225,
     "SMALL_COLOR": "#bf9fdf",
-    "MEDIUM_VALUE": 90,
+    "MEDIUM_VALUE": 265,
     "MEDIUM_COLOR": "#8c53c6",
     "LARGE_COLOR": "#592d86"
 }
@@ -199,19 +199,19 @@ const WEEKLY_COLORS = {
 const WEEKLY_DIFFERENCE_COLORS = {
     "MIN_VALUE": 0,
     "MIN_COLOR": "#00ab66",
-    "SMALL_VALUE": 18,
+    "SMALL_VALUE": 70,
     "SMALL_COLOR": "#FF0",
-    "MEDIUM_VALUE": 35,
+    "MEDIUM_VALUE": 125,
     "MEDIUM_COLOR": "#FFBF00",
     "LARGE_COLOR": "#F00"
 }
 
 const TOTAL_COLORS = {
-    "MIN_VALUE": 900,
+    "MIN_VALUE": 1300,
     "MIN_COLOR": "#fff2e6",
-    "SMALL_VALUE": 1350,
+    "SMALL_VALUE": 2000,
     "SMALL_COLOR": "#ffb366",
-    "MEDIUM_VALUE": 1800,
+    "MEDIUM_VALUE": 2500,
     "MEDIUM_COLOR": "#e67300",
     "LARGE_COLOR": "#663300"
 }
@@ -313,7 +313,7 @@ function addMapFeatures(map) {
     map.on('load', async function () {
         //Fetches the polygons of all the London Boroughs. 
         let boroughPolygons = await fetchData('london_boroughs.json');
-        let coronaData = await fetchData('week4.json');
+        let coronaData = await fetchData('week5.json');
         //merge Hackney and City of London
         let hackney = boroughPolygons.filter(x => x.properties["NAME"] === "Hackney")[0]
         let city = boroughPolygons.filter(x => x.properties["NAME"] === "City of London")[0]
@@ -330,7 +330,7 @@ function addMapFeatures(map) {
 
         const WEEKLY_EXPRESSION = expression.concat(calculateCountyColors(coronaData, WEEKLY_COLORS, "Cases in Last Week"));
         addChoroplethLayer(map, 'weekly-cases', boroughPolygons, WEEKLY_EXPRESSION);
-        selectBorough(map, coronaData, 'weekly-cases', "Cases in Last Week", "Number of Cases from 14th Sep - 20th Sep")
+        selectBorough(map, coronaData, 'weekly-cases', "Cases in Last Week", "Number of Cases from 28th Sep - 4th Oct")
         map.setLayoutProperty('weekly-cases', 'visibility', 'none');
 
         const DIFFERENCE_EXPRESSION = expression.concat(calculateCountyColors(coronaData, WEEKLY_DIFFERENCE_COLORS, "Difference From Previous Week"));
