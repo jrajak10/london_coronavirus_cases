@@ -39,7 +39,7 @@ function getInformation(currentBorough, coronaData, data, variable) {
 }
 
 async function getWeeks(currentBorough, data) {
-    let weeks = ['week1.json', 'week2.json', 'week3.json', 'week4.json', 'week5.json']
+    let weeks = ['week1.json', 'week2.json', 'week3.json', 'week4.json', 'week5.json', 'week6.json']
     for (let i=0; i<weeks.length; i++){
        weeks[i] = await fetchData(weeks[i]);
     }
@@ -57,8 +57,8 @@ async function getWeeks(currentBorough, data) {
 }
 
 const MAX_CHART_VALUES = {
-    "cases-per-100000": 120,
-    "weekly-cases": 350,
+    "cases-per-100000": 150,
+    "weekly-cases": 450,
     "difference": 200,
     "total-cases": 3000
 }
@@ -102,7 +102,7 @@ function newChart(ctx, VARIABLES, previousWeeks, MAX_CHART_VALUES) {
         type: 'bar',
         data: {
             labels: [['Aug 31-', 'Sep 6'], ['Sep 7-', 'Sep 13'], ['Sep 14-', 'Sep 20'], ['Sep 21-', 'Sep 27'], 
-                    ['Sep 28-', 'Oct 4']],
+                    ['Sep 28-', 'Oct 4'],  ['Oct 5-', 'Oct 11']],
             datasets: [{
                 label: setVariables(VARIABLES),
                 data: previousWeeks,
@@ -313,7 +313,7 @@ function addMapFeatures(map) {
     map.on('load', async function () {
         //Fetches the polygons of all the London Boroughs. 
         let boroughPolygons = await fetchData('london_boroughs.json');
-        let coronaData = await fetchData('week5.json');
+        let coronaData = await fetchData('week6.json');
         //merge Hackney and City of London
         let hackney = boroughPolygons.filter(x => x.properties["NAME"] === "Hackney")[0]
         let city = boroughPolygons.filter(x => x.properties["NAME"] === "City of London")[0]
@@ -330,7 +330,7 @@ function addMapFeatures(map) {
 
         const WEEKLY_EXPRESSION = expression.concat(calculateCountyColors(coronaData, WEEKLY_COLORS, "Cases in Last Week"));
         addChoroplethLayer(map, 'weekly-cases', boroughPolygons, WEEKLY_EXPRESSION);
-        selectBorough(map, coronaData, 'weekly-cases', "Cases in Last Week", "Number of Cases from 28th Sep - 4th Oct")
+        selectBorough(map, coronaData, 'weekly-cases', "Cases in Last Week", "Number of Cases from 5th Oct - 11th Oct")
         map.setLayoutProperty('weekly-cases', 'visibility', 'none');
 
         const DIFFERENCE_EXPRESSION = expression.concat(calculateCountyColors(coronaData, WEEKLY_DIFFERENCE_COLORS, "Difference From Previous Week"));
