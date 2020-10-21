@@ -39,7 +39,7 @@ function getInformation(currentBorough, coronaData, data, variable) {
 }
 
 async function getWeeks(currentBorough, data) {
-    let weeks = ['week1.json', 'week2.json', 'week3.json', 'week4.json', 'week5.json', 'week6.json']
+    let weeks = ['week1.json', 'week2.json', 'week3.json', 'week4.json', 'week5.json', 'week6.json', 'week7.json']
     for (let i=0; i<weeks.length; i++){
        weeks[i] = await fetchData(weeks[i]);
     }
@@ -102,7 +102,7 @@ function newChart(ctx, VARIABLES, previousWeeks, MAX_CHART_VALUES) {
         type: 'bar',
         data: {
             labels: [['Aug 31-', 'Sep 6'], ['Sep 7-', 'Sep 13'], ['Sep 14-', 'Sep 20'], ['Sep 21-', 'Sep 27'], 
-                    ['Sep 28-', 'Oct 4'],  ['Oct 5-', 'Oct 11']],
+                    ['Sep 28-', 'Oct 4'],  ['Oct 5-', 'Oct 11'],  ['Oct 12-', 'Oct 18']],
             datasets: [{
                 label: setVariables(VARIABLES),
                 data: previousWeeks,
@@ -111,7 +111,7 @@ function newChart(ctx, VARIABLES, previousWeeks, MAX_CHART_VALUES) {
                 borderWidth: 1,
                 barPercentage: 0.5
             }],
-            responsive: true
+            responsive: false
         },
         options: {
             responsive: true,
@@ -144,7 +144,7 @@ async function createChart(currentBorough, data, variable, MAX_CHART_VALUES) {
     node.setAttribute("style", "display: block")
     document.getElementById("chart").appendChild(node);
     let ctx = document.getElementById('myChart').getContext('2d');
-    
+    document.getElementById('myChart').style.height = '250px';
     let chart = newChart(ctx, variable, previousWeeks, MAX_CHART_VALUES);
     
     return chart
@@ -313,7 +313,7 @@ function addMapFeatures(map) {
     map.on('load', async function () {
         //Fetches the polygons of all the London Boroughs. 
         let boroughPolygons = await fetchData('london_boroughs.json');
-        let coronaData = await fetchData('week6.json');
+        let coronaData = await fetchData('week7.json');
         //merge Hackney and City of London
         let hackney = boroughPolygons.filter(x => x.properties["NAME"] === "Hackney")[0]
         let city = boroughPolygons.filter(x => x.properties["NAME"] === "City of London")[0]
@@ -330,7 +330,7 @@ function addMapFeatures(map) {
 
         const WEEKLY_EXPRESSION = expression.concat(calculateCountyColors(coronaData, WEEKLY_COLORS, "Cases in Last Week"));
         addChoroplethLayer(map, 'weekly-cases', boroughPolygons, WEEKLY_EXPRESSION);
-        selectBorough(map, coronaData, 'weekly-cases', "Cases in Last Week", "Number of Cases from 5th Oct - 11th Oct")
+        selectBorough(map, coronaData, 'weekly-cases', "Cases in Last Week", "Number of Cases from 12th Oct - 18th Oct")
         map.setLayoutProperty('weekly-cases', 'visibility', 'none');
 
         const DIFFERENCE_EXPRESSION = expression.concat(calculateCountyColors(coronaData, WEEKLY_DIFFERENCE_COLORS, "Difference From Previous Week"));
