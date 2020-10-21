@@ -137,3 +137,8 @@ h4 {
     background-color: #fff2e6;
 }
 
+#myChart {
+    height: 250px;
+    width: 300px;
+}
+
