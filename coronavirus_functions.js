@@ -177,21 +177,21 @@ function selectBorough(map, coronaData, id, data, variable) {
 
 //LARGE_VALUE is anything greater than the MEDIUM_VALUE
 const CASES_PROPORTION_COLORS = {
-    "MIN_VALUE": 60,
+    "MIN_VALUE": 90,
     "MIN_COLOR": "#ffe6e6",
-    "SMALL_VALUE": 75,
+    "SMALL_VALUE": 115,
     "SMALL_COLOR": "#ff8080",
-    "MEDIUM_VALUE": 90,
+    "MEDIUM_VALUE": 140,
     "MEDIUM_COLOR": "#ff1a1a",
     "LARGE_COLOR": "#8b0000"
 }
 
 const WEEKLY_COLORS = {
-    "MIN_VALUE": 140,
+    "MIN_VALUE": 200,
     "MIN_COLOR": "#f2ecf9",
-    "SMALL_VALUE": 225,
+    "SMALL_VALUE": 300,
     "SMALL_COLOR": "#bf9fdf",
-    "MEDIUM_VALUE": 265,
+    "MEDIUM_VALUE": 400,
     "MEDIUM_COLOR": "#8c53c6",
     "LARGE_COLOR": "#592d86"
 }
@@ -199,19 +199,19 @@ const WEEKLY_COLORS = {
 const WEEKLY_DIFFERENCE_COLORS = {
     "MIN_VALUE": 0,
     "MIN_COLOR": "#00ab66",
-    "SMALL_VALUE": 70,
+    "SMALL_VALUE": 50,
     "SMALL_COLOR": "#FF0",
-    "MEDIUM_VALUE": 125,
+    "MEDIUM_VALUE": 100,
     "MEDIUM_COLOR": "#FFBF00",
     "LARGE_COLOR": "#F00"
 }
 
 const TOTAL_COLORS = {
-    "MIN_VALUE": 1300,
+    "MIN_VALUE": 1700,
     "MIN_COLOR": "#fff2e6",
-    "SMALL_VALUE": 2000,
+    "SMALL_VALUE": 2600,
     "SMALL_COLOR": "#ffb366",
-    "MEDIUM_VALUE": 2500,
+    "MEDIUM_VALUE": 3500,
     "MEDIUM_COLOR": "#e67300",
     "LARGE_COLOR": "#663300"
 }
