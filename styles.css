@@ -137,6 +137,28 @@ h4 {
     background-color: #fff2e6;
 }
 
+#square-mile-cases-legend{
+    display: none;
+}
+
+#large-square-mile-cases-values{ 
+    background-color: #001a1a;
+}
+
+#medium-square-mile-cases-values{
+    background-color:#008b8b;
+}
+
+#small-square-mile-cases-values{
+    background-color: #00ffff;
+}
+
+#min-square-mile-cases-values{
+    background-color: #b3ffff;
+}
+
+
+
 #myChart {
     height: 250px;
     width: 300px;
