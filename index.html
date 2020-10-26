@@ -24,6 +24,9 @@
                 <input type="radio" id="weekly-cases" name="group-type" value="weekly-cases">
                 <label for="weekly-cases">Number of Weekly Cases<br class="mobile-break"></label>
                 <br>
+                <input type="radio" id="square-mile-cases" name="group-type" value="square-mile-cases">
+                <label for="square-mile-cases">Cases per Square Mile<br class="mobile-break"></label>
+                <br>
                 <input type="radio" id="difference" name="group-type" value="difference">
                 <label for="difference">Difference from Previous Week</label> <br class="mobile-break"></label>
                 <br>
@@ -46,6 +49,15 @@
                     <div><span class="color" id="medium-weekly-cases-values"></span>300-399</div>
                     <div><span class="color" id="small-weekly-cases-values"></span>200-299</div>
                     <div><span class="color" id="min-weekly-cases-values"></span>Less than 200</div>
+                </div>
+            </div>
+            <div id="square-mile-cases-legend" class="legend">
+                <h4>Cases/Square Mile</h4>
+                <div class='values'>
+                    <div><span class="color" id="large-square-mile-cases-values"></span>400+</div>
+                    <div><span class="color" id="medium-square-mile-cases-values"></span>300-399</div>
+                    <div><span class="color" id="small-square-mile-cases-values"></span>200-299</div>
+                    <div><span class="color" id="min-square-mile-cases-values"></span>Less than 200</div>
                 </div>
             </div>
             <div id="weekly-difference-legend" class="legend">

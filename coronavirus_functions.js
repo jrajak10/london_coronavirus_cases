@@ -60,7 +60,8 @@ const MAX_CHART_VALUES = {
     "cases-per-100000": 150,
     "weekly-cases": 450,
     "difference": 200,
-    "total-cases": 3000
+    "total-cases": 3000,
+    "square-mile-cases": 75
 }
 
 function setMaxValue(MAX_CHART_VALUES){
@@ -79,6 +80,7 @@ const VARIABLES = {
     "cases-per-100000": "Cases per 100,000",
     "weekly-cases": "Weekly Cases",
     "difference": "Difference",
+    "square-mile-cases": "Cases per Square Mile",
     "total-cases": "Total Cases"
 }
 
@@ -196,6 +198,16 @@ const WEEKLY_COLORS = {
     "LARGE_COLOR": "#592d86"
 }
 
+const SQUARE_MILE_COLORS = {
+    "MIN_VALUE": 10,
+    "MIN_COLOR": "#b3ffff",
+    "SMALL_VALUE": 25,
+    "SMALL_COLOR": "#00ffff",
+    "MEDIUM_VALUE": 40,
+    "MEDIUM_COLOR": "#008b8b",
+    "LARGE_COLOR": "#001a1a"
+}
+
 const WEEKLY_DIFFERENCE_COLORS = {
     "MIN_VALUE": 0,
     "MIN_COLOR": "#00ab66",
@@ -268,21 +280,21 @@ function addChoroplethLayer(map, id, boroughPolygons, expression) {
 }
 
 
-function toggleLegend(currentLegend, inactiveLegend1, inactiveLegend2, inactiveLegend3) {
-    const INACTIVE_LEGENDS = [inactiveLegend1, inactiveLegend2, inactiveLegend3];
+function toggleLegend(currentLegend, inactiveLegend1, inactiveLegend2, inactiveLegend3, inactiveLegend4) {
+    const INACTIVE_LEGENDS = [inactiveLegend1, inactiveLegend2, inactiveLegend3, inactiveLegend4];
     document.getElementById(currentLegend).style.display = 'block';
     INACTIVE_LEGENDS.map(legend => document.getElementById(legend).style.display = 'none');
 }
 
-function toggleLayers(map, currentLayer, inactiveLayer1, inactiveLayer2, inactiveLayer3,
-    currentLegend, inactiveLegend1, inactiveLegend2, inactiveLegend3) {
-    const INACTIVE_LAYERS = [inactiveLayer1, inactiveLayer2, inactiveLayer3];
+function toggleLayers(map, currentLayer, inactiveLayer1, inactiveLayer2, inactiveLayer3, inactiveLayer4,
+    currentLegend, inactiveLegend1, inactiveLegend2, inactiveLegend3, inactiveLegend4) {
+    const INACTIVE_LAYERS = [inactiveLayer1, inactiveLayer2, inactiveLayer3, inactiveLayer4];
     const ACTIVE_LAYERS = [currentLayer];
 
     document.getElementById(currentLayer).addEventListener('click', function () {
         INACTIVE_LAYERS.map(layer => map.setLayoutProperty(layer, 'visibility', 'none'));
         ACTIVE_LAYERS.map(layer => map.setLayoutProperty(layer, 'visibility', 'visible'));
-        toggleLegend(currentLegend, inactiveLegend1, inactiveLegend2, inactiveLegend3)
+        toggleLegend(currentLegend, inactiveLegend1, inactiveLegend2, inactiveLegend3, inactiveLegend4)
     });
 }
 
@@ -333,6 +345,11 @@ function addMapFeatures(map) {
         selectBorough(map, coronaData, 'weekly-cases', "Cases in Last Week", "Number of Cases from 12th Oct - 18th Oct")
         map.setLayoutProperty('weekly-cases', 'visibility', 'none');
 
+        const SQUARE_MILES_EXPRESSION = expression.concat(calculateCountyColors(coronaData, SQUARE_MILE_COLORS, "Cases per Square Mile"));
+        addChoroplethLayer(map, 'square-mile-cases', boroughPolygons, SQUARE_MILES_EXPRESSION);
+        selectBorough(map, coronaData, 'square-mile-cases', "Cases per Square Mile", "Cases per Square Mile")
+        map.setLayoutProperty('square-mile-cases', 'visibility', 'none');
+
         const DIFFERENCE_EXPRESSION = expression.concat(calculateCountyColors(coronaData, WEEKLY_DIFFERENCE_COLORS, "Difference From Previous Week"));
         addChoroplethLayer(map, 'difference', boroughPolygons, DIFFERENCE_EXPRESSION);
         selectBorough(map, coronaData, 'difference', "Difference From Previous Week", "Difference from Previous Week")
@@ -343,21 +360,24 @@ function addMapFeatures(map) {
         selectBorough(map, coronaData, 'total-cases', "Total Cases", "Total Number of Cases")
         map.setLayoutProperty('total-cases', 'visibility', 'none');
 
-        toggleLayers(map, 'cases-per-100000', 'weekly-cases', 'difference', 'total-cases',
-            "cases-per-100000-legend", "weekly-cases-legend", "weekly-difference-legend", "total-legend");
-        toggleLayers(map, 'weekly-cases', 'cases-per-100000', 'difference', 'total-cases',
-            "weekly-cases-legend", "cases-per-100000-legend", "weekly-difference-legend", "total-legend");
-        toggleLayers(map, 'difference', 'weekly-cases', 'cases-per-100000', 'total-cases',
-            "weekly-difference-legend", "cases-per-100000-legend", "weekly-cases-legend", "total-legend");
-        toggleLayers(map, 'total-cases', 'difference', 'weekly-cases', 'cases-per-100000',
-            "total-legend", "cases-per-100000-legend", "weekly-cases-legend", "weekly-difference-legend");
+        toggleLayers(map, 'cases-per-100000', 'weekly-cases', 'difference', 'total-cases', 'square-mile-cases',
+            "cases-per-100000-legend", "weekly-cases-legend", "weekly-difference-legend", "total-legend", "square-mile-cases-legend");
+        toggleLayers(map, 'weekly-cases', 'cases-per-100000', 'difference', 'total-cases', 'square-mile-cases',
+            "weekly-cases-legend", "cases-per-100000-legend", "weekly-difference-legend", "total-legend", "square-mile-cases-legend");
+        toggleLayers(map, 'difference', 'weekly-cases', 'cases-per-100000', 'total-cases', 'square-mile-cases',
+            "weekly-difference-legend", "cases-per-100000-legend", "weekly-cases-legend", "total-legend", "square-mile-cases-legend");
+        toggleLayers(map, 'total-cases', 'difference', 'weekly-cases', 'cases-per-100000', 'square-mile-cases',
+            "total-legend", "cases-per-100000-legend", "weekly-cases-legend", "weekly-difference-legend", "square-mile-cases-legend");
+        toggleLayers(map, 'square-mile-cases', 'total-cases', 'difference', 'weekly-cases', 'cases-per-100000',
+            "square-mile-cases-legend", "total-legend", "cases-per-100000-legend", "weekly-cases-legend", "weekly-difference-legend");
 
         addBoroughsOutline(map, 'boroughs-outline', boroughPolygons, 2.5);
 
         formatCursor(map, 'cases-per-100000');
         formatCursor(map, 'weekly-cases');
+        formatCursor(map, 'square-mile-cases')
         formatCursor(map, 'difference');
-        formatCursor(map, 'total-cases');
+        formatCursor(map, 'total-cases');;
 
     });
 }
