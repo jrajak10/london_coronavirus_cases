@@ -40,7 +40,7 @@ function getInformation(currentBorough, coronaData, data, variable) {
 
 async function getWeeks(currentBorough, data) {
     let weeks = ['week1.json', 'week2.json', 'week3.json', 'week4.json', 'week5.json', 'week6.json', 'week7.json', 'week8.json',
-                'week9.json']
+                'week9.json', 'week10.json']
     for (let i=0; i<weeks.length; i++){
        weeks[i] = await fetchData(weeks[i]);
     }
@@ -94,19 +94,29 @@ function setVariables(VARIABLES){
             variable = VARIABLES[keys[i]]
     }
 }
-
  return variable
+}
+
+function setChart(VARIABLES){
+    let variable = setVariables(VARIABLES)
+    let type;
+    if(variable === "Total Cases"){
+        type = "line"
+    }
+    else type = "bar"
+
+    return type;
 }
 
 function newChart(ctx, VARIABLES, previousWeeks, MAX_CHART_VALUES) {
     let val = setMaxValue(MAX_CHART_VALUES);
     
     let chart = new Chart(ctx, {
-        type: 'bar',
+        type: setChart(VARIABLES),
         data: {
             labels: [['Aug 31-', 'Sep 6'], ['Sep 7-', 'Sep 13'], ['Sep 14-', 'Sep 20'], ['Sep 21-', 'Sep 27'], 
                     ['Sep 28-', 'Oct 4'],  ['Oct 5-', 'Oct 11'],  ['Oct 12-', 'Oct 18'], ['Oct 19-', 'Oct 25'],
-                    ['Oct 25-', 'Nov 1']],
+                    ['Oct 25-', 'Nov 1'], ['Nov 2-', 'Nov 8']],
             datasets: [{
                 label: setVariables(VARIABLES),
                 data: previousWeeks,
@@ -181,31 +191,31 @@ function selectBorough(map, coronaData, id, data, variable) {
 
 //LARGE_VALUE is anything greater than the MEDIUM_VALUE
 const CASES_PROPORTION_COLORS = {
-    "MIN_VALUE": 90,
+    "MIN_VALUE": 125,
     "MIN_COLOR": "#ffe6e6",
-    "SMALL_VALUE": 115,
+    "SMALL_VALUE": 150,
     "SMALL_COLOR": "#ff8080",
-    "MEDIUM_VALUE": 140,
+    "MEDIUM_VALUE": 200,
     "MEDIUM_COLOR": "#ff1a1a",
     "LARGE_COLOR": "#8b0000"
 }
 
 const WEEKLY_COLORS = {
-    "MIN_VALUE": 200,
+    "MIN_VALUE": 300,
     "MIN_COLOR": "#f2ecf9",
-    "SMALL_VALUE": 300,
+    "SMALL_VALUE": 450,
     "SMALL_COLOR": "#bf9fdf",
-    "MEDIUM_VALUE": 400,
+    "MEDIUM_VALUE": 600,
     "MEDIUM_COLOR": "#8c53c6",
     "LARGE_COLOR": "#592d86"
 }
 
 const SQUARE_MILE_COLORS = {
-    "MIN_VALUE": 10,
+    "MIN_VALUE": 15,
     "MIN_COLOR": "#b3ffff",
-    "SMALL_VALUE": 25,
+    "SMALL_VALUE": 30,
     "SMALL_COLOR": "#00ffff",
-    "MEDIUM_VALUE": 40,
+    "MEDIUM_VALUE": 45,
     "MEDIUM_COLOR": "#008b8b",
     "LARGE_COLOR": "#001a1a"
 }
@@ -221,11 +231,11 @@ const WEEKLY_DIFFERENCE_COLORS = {
 }
 
 const TOTAL_COLORS = {
-    "MIN_VALUE": 1700,
+    "MIN_VALUE": 3000,
     "MIN_COLOR": "#fff2e6",
-    "SMALL_VALUE": 2600,
+    "SMALL_VALUE": 4000,
     "SMALL_COLOR": "#ffb366",
-    "MEDIUM_VALUE": 3500,
+    "MEDIUM_VALUE": 5000,
     "MEDIUM_COLOR": "#e67300",
     "LARGE_COLOR": "#663300"
 }
@@ -327,7 +337,7 @@ function addMapFeatures(map) {
     map.on('load', async function () {
         //Fetches the polygons of all the London Boroughs. 
         let boroughPolygons = await fetchData('london_boroughs.json');
-        let coronaData = await fetchData('week9.json');
+        let coronaData = await fetchData('week10.json');
         //merge Hackney and City of London
         let hackney = boroughPolygons.filter(x => x.properties["NAME"] === "Hackney")[0]
         let city = boroughPolygons.filter(x => x.properties["NAME"] === "City of London")[0]
@@ -344,7 +354,7 @@ function addMapFeatures(map) {
 
         const WEEKLY_EXPRESSION = expression.concat(calculateCountyColors(coronaData, WEEKLY_COLORS, "Cases in Last Week"));
         addChoroplethLayer(map, 'weekly-cases', boroughPolygons, WEEKLY_EXPRESSION);
-        selectBorough(map, coronaData, 'weekly-cases', "Cases in Last Week", "Number of Cases from 26th Oct - 1st Nov")
+        selectBorough(map, coronaData, 'weekly-cases', "Cases in Last Week", "Number of Cases from 2nd - 8th Nov")
         map.setLayoutProperty('weekly-cases', 'visibility', 'none');
 
         const SQUARE_MILES_EXPRESSION = expression.concat(calculateCountyColors(coronaData, SQUARE_MILE_COLORS, "Cases per Square Mile"));
