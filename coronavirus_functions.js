@@ -40,10 +40,11 @@ function getInformation(currentBorough, coronaData, data, variable) {
 
 async function getWeeks(currentBorough, data) {
     let weeks = ['week1.json', 'week2.json', 'week3.json', 'week4.json', 'week5.json', 'week6.json', 'week7.json', 'week8.json',
-                'week9.json', 'week10.json', 'week11.json', 'week12.json', 'week13.json', 'week14.json', 'week15.json', 'week16.json',
-            'week17.json', 'week18.json', 'week19.json', 'week20.json', 'week21.json', 'week22.json', 'week23.json', 'week24.json']
-    for (let i=0; i<weeks.length; i++){
-       weeks[i] = await fetchData(weeks[i]);
+        'week9.json', 'week10.json', 'week11.json', 'week12.json', 'week13.json', 'week14.json', 'week15.json', 'week16.json',
+        'week17.json', 'week18.json', 'week19.json', 'week20.json', 'week21.json', 'week22.json', 'week23.json', 'week24.json', 'week25.json'
+    ]
+    for (let i = 0; i < weeks.length; i++) {
+        weeks[i] = await fetchData(weeks[i]);
     }
     weeks = weeks.flat()
     let arr = [];
@@ -66,16 +67,16 @@ const MAX_CHART_VALUES = {
     "square-mile-cases": 75
 }
 
-function setMaxValue(MAX_CHART_VALUES){
+function setMaxValue(MAX_CHART_VALUES) {
     let keys = Object.keys(MAX_CHART_VALUES)
     let maxValue = 100
-    for(let i=0; i<keys.length; i++){
+    for (let i = 0; i < keys.length; i++) {
         let id = '#' + keys[i] + ':checked'
-        if (document.querySelector(id) !== null){
+        if (document.querySelector(id) !== null) {
             maxValue = MAX_CHART_VALUES[keys[i]]
         }
     }
-      return maxValue;
+    return maxValue;
 }
 
 const VARIABLES = {
@@ -86,41 +87,43 @@ const VARIABLES = {
     "total-cases": "Total Cases"
 }
 
-function setVariables(VARIABLES){
+function setVariables(VARIABLES) {
     let keys = Object.keys(VARIABLES)
     let variable;
-    for(let i=0; i<keys.length; i++){
+    for (let i = 0; i < keys.length; i++) {
         let id = '#' + keys[i] + ':checked'
-        if (document.querySelector(id) !== null){
+        if (document.querySelector(id) !== null) {
             variable = VARIABLES[keys[i]]
+        }
     }
-}
- return variable
+    return variable
 }
 
-function setChart(VARIABLES){
+function setChart(VARIABLES) {
     let variable = setVariables(VARIABLES)
     let type;
-    if(variable === "Total Cases"){
+    if (variable === "Total Cases") {
         type = "line"
-    }
-    else type = "bar"
+    } else type = "bar"
 
     return type;
 }
 
 function newChart(ctx, VARIABLES, previousWeeks, MAX_CHART_VALUES) {
     let val = setMaxValue(MAX_CHART_VALUES);
-    
+
     let chart = new Chart(ctx, {
         type: setChart(VARIABLES),
         data: {
-            labels: [['Aug 31-', 'Sep 6'], ['Sep 7-', 'Sep 13'], ['Sep 14-', 'Sep 20'], ['Sep 21-', 'Sep 27'], 
-                    ['Sep 28-', 'Oct 4'],  ['Oct 5-', 'Oct 11'],  ['Oct 12-', 'Oct 18'], ['Oct 19-', 'Oct 25'],
-                    ['Oct 25-', 'Nov 1'], ['Nov 2-', 'Nov 8'], ['Nov 9-', 'Nov 15'], ['Nov 16-', 'Nov 22'], 
-                ['Nov 23- Nov 29'], ['Nov 30- Dec 6'], ['Dec 7-', 'Dec-13'], ['Dec 14-', 'Dec-20'], ['Dec 21-', 'Dec 27'], 
-            ['Dec 28-',  'Jan 3'], ['Jan 4-', 'Jan 10'], ['Jan 11-', 'Jan 17'], ['Jan 18-', 'Jan 24'], ['Jan 25-', 'Jan 31'], 
-            ['Feb 1-', 'Feb 7'], ['Feb 8-', 'Feb 14']],
+            labels: [
+                ['Aug 31-', 'Sep 6'], ['Sep 7-', 'Sep 13'], ['Sep 14-', 'Sep 20'], ['Sep 21-', 'Sep 27'],
+                ['Sep 28-', 'Oct 4'], ['Oct 5-', 'Oct 11'], ['Oct 12-', 'Oct 18'], ['Oct 19-', 'Oct 25'],
+                ['Oct 25-', 'Nov 1'], ['Nov 2-', 'Nov 8'], ['Nov 9-', 'Nov 15'], ['Nov 16-', 'Nov 22'],
+                ['Nov 23- Nov 29'], ['Nov 30- Dec 6'], ['Dec 7-', 'Dec-13'], ['Dec 14-', 'Dec-20'],
+                ['Dec 21-', 'Dec 27'], ['Dec 28-', 'Jan 3'], ['Jan 4-', 'Jan 10'], ['Jan 11-', 'Jan 17'],
+                ['Jan 18-', 'Jan 24'], ['Jan 25-', 'Jan 31'], ['Feb 1-', 'Feb 7'], ['Feb 8-', 'Feb 14'],
+                ['Feb 15-', 'Feb 21']
+            ],
             datasets: [{
                 label: setVariables(VARIABLES),
                 data: previousWeeks,
@@ -164,19 +167,18 @@ async function createChart(currentBorough, data, variable, MAX_CHART_VALUES) {
     let ctx = document.getElementById('myChart').getContext('2d');
     document.getElementById('myChart').style.height = '250px';
     let chart = newChart(ctx, variable, previousWeeks, MAX_CHART_VALUES);
-    
+
     return chart
 }
 
 
 function selectBorough(map, coronaData, id, data, variable) {
-    map.on('click', id, function (e) {
+    map.on('click', id, function(e) {
         let currentBorough = e.features;
 
         if (!map.getLayer('current-borough')) {
             addBoroughsOutline(map, 'current-borough', currentBorough, 5);
-        }
-        else {
+        } else {
             let currentBoroughData = {
                 "type": "FeatureCollection",
                 "features": currentBorough
@@ -259,14 +261,11 @@ function calculateCountyColors(coronaData, colorObject, data) {
         let objectData = coronaData[i][data];
         if (objectData < colorObject["MIN_VALUE"]) {
             color = colorObject["MIN_COLOR"];
-        }
-        else if (objectData >= colorObject["MIN_VALUE"] && objectData < colorObject["SMALL_VALUE"]) {
+        } else if (objectData >= colorObject["MIN_VALUE"] && objectData < colorObject["SMALL_VALUE"]) {
             color = colorObject["SMALL_COLOR"];
-        }
-        else if (objectData >= colorObject["SMALL_VALUE"] && objectData < colorObject["MEDIUM_VALUE"]) {
+        } else if (objectData >= colorObject["SMALL_VALUE"] && objectData < colorObject["MEDIUM_VALUE"]) {
             color = colorObject["MEDIUM_COLOR"];
-        }
-        else {
+        } else {
             color = colorObject["LARGE_COLOR"];
         }
         boroughColors.push(borough, color);
@@ -306,7 +305,7 @@ function toggleLayers(map, currentLayer, inactiveLayer1, inactiveLayer2, inactiv
     const INACTIVE_LAYERS = [inactiveLayer1, inactiveLayer2, inactiveLayer3, inactiveLayer4];
     const ACTIVE_LAYERS = [currentLayer];
 
-    document.getElementById(currentLayer).addEventListener('click', function () {
+    document.getElementById(currentLayer).addEventListener('click', function() {
         INACTIVE_LAYERS.map(layer => map.setLayoutProperty(layer, 'visibility', 'none'));
         ACTIVE_LAYERS.map(layer => map.setLayoutProperty(layer, 'visibility', 'visible'));
         toggleLegend(currentLegend, inactiveLegend1, inactiveLegend2, inactiveLegend3, inactiveLegend4)
@@ -316,10 +315,10 @@ function toggleLayers(map, currentLayer, inactiveLayer1, inactiveLayer2, inactiv
 
 
 function formatCursor(map, layer) {
-    map.on('mouseenter', layer, function (e) {
+    map.on('mouseenter', layer, function(e) {
         map.getCanvas().style.cursor = 'pointer';
     });
-    map.on('mouseleave', layer, function (e) {
+    map.on('mouseleave', layer, function(e) {
         map.getCanvas().style.cursor = '';
     });
 }
@@ -337,10 +336,10 @@ function addMapFeatures(map) {
     }));
 
 
-    map.on('load', async function () {
+    map.on('load', async function() {
         //Fetches the polygons of all the London Boroughs. 
         let boroughPolygons = await fetchData('london_boroughs.json');
-        let coronaData = await fetchData('week24.json');
+        let coronaData = await fetchData('week25.json');
         //merge Hackney and City of London
         let hackney = boroughPolygons.filter(x => x.properties["NAME"] === "Hackney")[0]
         let city = boroughPolygons.filter(x => x.properties["NAME"] === "City of London")[0]
@@ -357,7 +356,7 @@ function addMapFeatures(map) {
 
         const WEEKLY_EXPRESSION = expression.concat(calculateCountyColors(coronaData, WEEKLY_COLORS, "Cases in Last Week"));
         addChoroplethLayer(map, 'weekly-cases', boroughPolygons, WEEKLY_EXPRESSION);
-        selectBorough(map, coronaData, 'weekly-cases', "Cases in Last Week", "Number of Cases from 8th - 14th Feb")
+        selectBorough(map, coronaData, 'weekly-cases', "Cases in Last Week", "Number of Cases from 15th - 21st Feb")
         map.setLayoutProperty('weekly-cases', 'visibility', 'none');
 
         const SQUARE_MILES_EXPRESSION = expression.concat(calculateCountyColors(coronaData, SQUARE_MILE_COLORS, "Cases per Square Mile"));
@@ -372,7 +371,7 @@ function addMapFeatures(map) {
 
         const TOTAL_CASES_EXPRESSION = expression.concat(calculateCountyColors(coronaData, TOTAL_COLORS, "Total Cases"));
         addChoroplethLayer(map, 'total-cases', boroughPolygons, TOTAL_CASES_EXPRESSION);
-        selectBorough(map, coronaData, 'total-cases', "Total Cases", "Total Number of Cases to 18th Feb")
+        selectBorough(map, coronaData, 'total-cases', "Total Cases", "Total Number of Cases to 25th Feb")
         map.setLayoutProperty('total-cases', 'visibility', 'none');
 
         toggleLayers(map, 'cases-per-100000', 'weekly-cases', 'difference', 'total-cases', 'square-mile-cases',
