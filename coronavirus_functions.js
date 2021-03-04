@@ -41,7 +41,8 @@ function getInformation(currentBorough, coronaData, data, variable) {
 async function getWeeks(currentBorough, data) {
     let weeks = ['week1.json', 'week2.json', 'week3.json', 'week4.json', 'week5.json', 'week6.json', 'week7.json', 'week8.json',
         'week9.json', 'week10.json', 'week11.json', 'week12.json', 'week13.json', 'week14.json', 'week15.json', 'week16.json',
-        'week17.json', 'week18.json', 'week19.json', 'week20.json', 'week21.json', 'week22.json', 'week23.json', 'week24.json', 'week25.json'
+        'week17.json', 'week18.json', 'week19.json', 'week20.json', 'week21.json', 'week22.json', 'week23.json', 'week24.json', 
+        'week25.json', 'week26.json'
     ]
     for (let i = 0; i < weeks.length; i++) {
         weeks[i] = await fetchData(weeks[i]);
@@ -122,7 +123,7 @@ function newChart(ctx, VARIABLES, previousWeeks, MAX_CHART_VALUES) {
                 ['Nov 23- Nov 29'], ['Nov 30- Dec 6'], ['Dec 7-', 'Dec-13'], ['Dec 14-', 'Dec-20'],
                 ['Dec 21-', 'Dec 27'], ['Dec 28-', 'Jan 3'], ['Jan 4-', 'Jan 10'], ['Jan 11-', 'Jan 17'],
                 ['Jan 18-', 'Jan 24'], ['Jan 25-', 'Jan 31'], ['Feb 1-', 'Feb 7'], ['Feb 8-', 'Feb 14'],
-                ['Feb 15-', 'Feb 21']
+                ['Feb 15-', 'Feb 21'], ['Feb 22-', 'Feb 28']
             ],
             datasets: [{
                 label: setVariables(VARIABLES),
@@ -197,30 +198,30 @@ function selectBorough(map, coronaData, id, data, variable) {
 
 //LARGE_VALUE is anything greater than the MEDIUM_VALUE
 const CASES_PROPORTION_COLORS = {
-    "MIN_VALUE": 70,
+    "MIN_VALUE": 40,
     "MIN_COLOR": "#ffe6e6",
-    "SMALL_VALUE": 110,
+    "SMALL_VALUE": 60,
     "SMALL_COLOR": "#ff8080",
-    "MEDIUM_VALUE": 150,
+    "MEDIUM_VALUE": 80,
     "MEDIUM_COLOR": "#ff1a1a",
     "LARGE_COLOR": "#8b0000"
 }
 
 const WEEKLY_COLORS = {
-    "MIN_VALUE": 200,
+    "MIN_VALUE": 100,
     "MIN_COLOR": "#f2ecf9",
-    "SMALL_VALUE": 300,
+    "SMALL_VALUE": 170,
     "SMALL_COLOR": "#bf9fdf",
-    "MEDIUM_VALUE": 400,
+    "MEDIUM_VALUE": 240,
     "MEDIUM_COLOR": "#8c53c6",
     "LARGE_COLOR": "#592d86"
 }
 const SQUARE_MILE_COLORS = {
-    "MIN_VALUE": 10,
+    "MIN_VALUE": 6,
     "MIN_COLOR": "#b3ffff",
-    "SMALL_VALUE": 20,
+    "SMALL_VALUE": 12,
     "SMALL_COLOR": "#00ffff",
-    "MEDIUM_VALUE": 30,
+    "MEDIUM_VALUE": 18,
     "MEDIUM_COLOR": "#008b8b",
     "LARGE_COLOR": "#001a1a"
 }
@@ -236,11 +237,11 @@ const WEEKLY_DIFFERENCE_COLORS = {
 }
 
 const TOTAL_COLORS = {
-    "MIN_VALUE": 12000,
+    "MIN_VALUE": 15000,
     "MIN_COLOR": "#fff2e6",
-    "SMALL_VALUE": 18000,
+    "SMALL_VALUE": 21000,
     "SMALL_COLOR": "#ffb366",
-    "MEDIUM_VALUE": 24000,
+    "MEDIUM_VALUE": 27000,
     "MEDIUM_COLOR": "#e67300",
     "LARGE_COLOR": "#663300"
 }
@@ -339,7 +340,7 @@ function addMapFeatures(map) {
     map.on('load', async function() {
         //Fetches the polygons of all the London Boroughs. 
         let boroughPolygons = await fetchData('london_boroughs.json');
-        let coronaData = await fetchData('week25.json');
+        let coronaData = await fetchData('week26.json');
         //merge Hackney and City of London
         let hackney = boroughPolygons.filter(x => x.properties["NAME"] === "Hackney")[0]
         let city = boroughPolygons.filter(x => x.properties["NAME"] === "City of London")[0]
@@ -356,7 +357,7 @@ function addMapFeatures(map) {
 
         const WEEKLY_EXPRESSION = expression.concat(calculateCountyColors(coronaData, WEEKLY_COLORS, "Cases in Last Week"));
         addChoroplethLayer(map, 'weekly-cases', boroughPolygons, WEEKLY_EXPRESSION);
-        selectBorough(map, coronaData, 'weekly-cases', "Cases in Last Week", "Number of Cases from 15th - 21st Feb")
+        selectBorough(map, coronaData, 'weekly-cases', "Cases in Last Week", "Number of Cases from 22nd - 28th Feb")
         map.setLayoutProperty('weekly-cases', 'visibility', 'none');
 
         const SQUARE_MILES_EXPRESSION = expression.concat(calculateCountyColors(coronaData, SQUARE_MILE_COLORS, "Cases per Square Mile"));
@@ -371,7 +372,7 @@ function addMapFeatures(map) {
 
         const TOTAL_CASES_EXPRESSION = expression.concat(calculateCountyColors(coronaData, TOTAL_COLORS, "Total Cases"));
         addChoroplethLayer(map, 'total-cases', boroughPolygons, TOTAL_CASES_EXPRESSION);
-        selectBorough(map, coronaData, 'total-cases', "Total Cases", "Total Number of Cases to 25th Feb")
+        selectBorough(map, coronaData, 'total-cases', "Total Cases", "Total Number of Cases to 4th Mar")
         map.setLayoutProperty('total-cases', 'visibility', 'none');
 
         toggleLayers(map, 'cases-per-100000', 'weekly-cases', 'difference', 'total-cases', 'square-mile-cases',
