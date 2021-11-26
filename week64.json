@@ -1,0 +1,292 @@
+{
+    "features": [
+        {
+          "Borough": "Barking and Dagenham",
+          "Cases per 100,000 in Past Week": 244,
+          "Cases in Last Week": 522,
+          "Difference From Previous Week": -55,
+          "Total Cases": 34737,
+          "Area": 13.93,
+          "Cases per Square Mile": 37.47
+        },
+        {
+          "Borough": "Barnet",
+          "Cases per 100,000 in Past Week": 364,
+          "Cases in Last Week": 1453,
+          "Difference From Previous Week": 143,
+          "Total Cases": 56475,
+          "Area": 33.49,
+          "Cases per Square Mile": 43.39
+        },
+        {
+          "Borough": "Bexley",
+          "Cases per 100,000 in Past Week": 360,
+          "Cases in Last Week": 897,
+          "Difference From Previous Week": 109,
+          "Total Cases": 37749,
+          "Area": 23.38,
+          "Cases per Square Mile": 38.37
+        },
+        {
+          "Borough": "Brent",
+          "Cases per 100,000 in Past Week": 283,
+          "Cases in Last Week": 928,
+          "Difference From Previous Week": 35,
+          "Total Cases": 47522,
+          "Area": 16.7,
+          "Cases per Square Mile": 55.57
+        },
+        {
+          "Borough": "Bromley",
+          "Cases per 100,000 in Past Week": 394,
+          "Cases in Last Week": 1310,
+          "Difference From Previous Week": 135,
+          "Total Cases": 45247,
+          "Area": 57.97,
+          "Cases per Square Mile": 22.6
+        },
+        {
+          "Borough": "Camden",
+          "Cases per 100,000 in Past Week": 263,
+          "Cases in Last Week": 735,
+          "Difference From Previous Week": 74,
+          "Total Cases": 28460,
+          "Area": 8.4,
+          "Cases per Square Mile": 87.5
+        },
+        {
+          "Borough": "Croydon",
+          "Cases per 100,000 in Past Week": 302,
+          "Cases in Last Week": 1174,
+          "Difference From Previous Week": 244,
+          "Total Cases": 54757,
+          "Area": 33.41,
+          "Cases per Square Mile": 35.14
+        },
+        {
+          "Borough": "Ealing",
+          "Cases per 100,000 in Past Week": 393,
+          "Cases in Last Week": 1336,
+          "Difference From Previous Week": 256,
+          "Total Cases": 54713,
+          "Area": 21.44,
+          "Cases per Square Mile": 62.31
+        },
+        {
+          "Borough": "Enfield",
+          "Cases per 100,000 in Past Week": 258,
+          "Cases in Last Week": 860,
+          "Difference From Previous Week": 58,
+          "Total Cases": 46888,
+          "Area": 31.74,
+          "Cases per Square Mile": 27.1
+        },
+        {
+          "Borough": "Greenwich",
+          "Cases per 100,000 in Past Week": 281,
+          "Cases in Last Week": 813,
+          "Difference From Previous Week": 118,
+          "Total Cases": 38674,
+          "Area": 18.28,
+          "Cases per Square Mile": 44.47
+        },
+        {
+          "Borough": "Hackney and City of London",
+          "Cases per 100,000 in Past Week": 287,
+          "Cases in Last Week": 839,
+          "Difference From Previous Week": 106,
+          "Total Cases": 38258,
+          "Area": 8.48,
+          "Cases per Square Mile": 13.92
+        },
+        {
+          "Borough": "Hammersmith and Fulham",
+          "Cases per 100,000 in Past Week": 355,
+          "Cases in Last Week": 652,
+          "Difference From Previous Week": 62,
+          "Total Cases": 26473,
+          "Area": 6.33,
+          "Cases per Square Mile": 103
+        },
+        {
+          "Borough": "Haringey",
+          "Cases per 100,000 in Past Week": 328,
+          "Cases in Last Week": 873,
+          "Difference From Previous Week": 100,
+          "Total Cases": 36602,
+          "Area": 11.42,
+          "Cases per Square Mile": 76.44
+        },
+        {
+          "Borough": "Harrow",
+          "Cases per 100,000 in Past Week": 310,
+          "Cases in Last Week": 781,
+          "Difference From Previous Week": -36,
+          "Total Cases": 36902,
+          "Area": 19.49,
+          "Cases per Square Mile": 40.07
+        },
+        {
+          "Borough": "Havering",
+          "Cases per 100,000 in Past Week": 384,
+          "Cases in Last Week": 1001,
+          "Difference From Previous Week": 249,
+          "Total Cases": 42689,
+          "Area": 43.35,
+          "Cases per Square Mile": 23.09
+        },
+        {
+          "Borough": "Hillingdon",
+          "Cases per 100,000 in Past Week": 358,
+          "Cases in Last Week": 1107,
+          "Difference From Previous Week": 121,
+          "Total Cases": 47063,
+          "Area": 44.67,
+          "Cases per Square Mile": 24.78
+        },
+        {
+          "Borough": "Hounslow",
+          "Cases per 100,000 in Past Week": 393,
+          "Cases in Last Week": 1067,
+          "Difference From Previous Week": 191,
+          "Total Cases": 44547,
+          "Area": 21.61,
+          "Cases per Square Mile": 49.38
+        },
+        {
+          "Borough": "Islington",
+          "Cases per 100,000 in Past Week": 269,
+          "Cases in Last Week": 667,
+          "Difference From Previous Week": 95,
+          "Total Cases": 29350,
+          "Area": 5.74,
+          "Cases per Square Mile": 116.2
+        },
+        {
+          "Borough": "Kensington and Chelsea",
+          "Cases per 100,000 in Past Week": 342,
+          "Cases in Last Week": 536,
+          "Difference From Previous Week": 35,
+          "Total Cases": 18454,
+          "Area": 4.68,
+          "Cases per Square Mile": 114.53
+        },
+        {
+          "Borough": "Kingston upon Thames",
+          "Cases per 100,000 in Past Week": 440,
+          "Cases in Last Week": 788,
+          "Difference From Previous Week": 93,
+          "Total Cases": 24838,
+          "Area": 14.38,
+          "Cases per Square Mile": 54.8
+        },
+        {
+          "Borough": "Lambeth",
+          "Cases per 100,000 in Past Week": 289,
+          "Cases in Last Week": 929,
+          "Difference From Previous Week": 148,
+          "Total Cases": 46197,
+          "Area": 10.36,
+          "Cases per Square Mile": 89.67
+        },
+        {
+          "Borough": "Lewisham",
+          "Cases per 100,000 in Past Week": 281,
+          "Cases in Last Week": 859,
+          "Difference From Previous Week": 145,
+          "Total Cases": 39352,
+          "Area": 13.57,
+          "Cases per Square Mile": 63.3
+        },
+        {
+          "Borough": "Merton",
+          "Cases per 100,000 in Past Week": 408,
+          "Cases in Last Week": 843,
+          "Difference From Previous Week": 182,
+          "Total Cases": 29787,
+          "Area": 14.52,
+          "Cases per Square Mile": 58.06
+        },
+        {
+          "Borough": "Newham",
+          "Cases per 100,000 in Past Week": 221,
+          "Cases in Last Week": 785,
+          "Difference From Previous Week": 81,
+          "Total Cases": 53611,
+          "Area": 13.98,
+          "Cases per Square Mile": 56.15
+        },
+        {
+          "Borough": "Redbridge",
+          "Cases per 100,000 in Past Week": 308,
+          "Cases in Last Week": 940,
+          "Difference From Previous Week": 14,
+          "Total Cases": 50433,
+          "Area": 21.78,
+          "Cases per Square Mile": 43.16
+        },
+        {
+          "Borough": "Richmond upon Thames",
+          "Cases per 100,000 in Past Week": 574,
+          "Cases in Last Week": 1138,
+          "Difference From Previous Week": 204,
+          "Total Cases": 26142,
+          "Area": 22.17,
+          "Cases per Square Mile": 51.33
+        },
+        {
+          "Borough": "Southwark",
+          "Cases per 100,000 in Past Week": 237,
+          "Cases in Last Week": 758,
+          "Difference From Previous Week": 99,
+          "Total Cases": 41173,
+          "Area": 11.14,
+          "Cases per Square Mile": 68.04
+        },
+        {
+          "Borough": "Sutton",
+          "Cases per 100,000 in Past Week": 436,
+          "Cases in Last Week": 906,
+          "Difference From Previous Week": 105,
+          "Total Cases": 30965,
+          "Area": 16.93,
+          "Cases per Square Mile": 53.51
+        },
+        {
+          "Borough": "Tower Hamlets",
+          "Cases per 100,000 in Past Week": 236,
+          "Cases in Last Week": 784,
+          "Difference From Previous Week": -10,
+          "Total Cases": 47833,
+          "Area": 7.63,
+          "Cases per Square Mile": 102.75
+        },
+        {
+          "Borough": "Waltham Forest",
+          "Cases per 100,000 in Past Week": 325,
+          "Cases in Last Week": 901,
+          "Difference From Previous Week": 143,
+          "Total Cases": 41331,
+          "Area": 14.99,
+          "Cases per Square Mile": 60.11
+        },
+        {
+          "Borough": "Wandsworth",
+          "Cases per 100,000 in Past Week": 412,
+          "Cases in Last Week": 1357,
+          "Difference From Previous Week": 300,
+          "Total Cases": 46295,
+          "Area": 13.23,
+          "Cases per Square Mile": 102.57
+        },
+        {
+          "Borough": "Westminster",
+          "Cases per 100,000 in Past Week": 247,
+          "Cases in Last Week": 666,
+          "Difference From Previous Week": 94,
+          "Total Cases": 27717,
+          "Area": 8.29,
+          "Cases per Square Mile": 80.34
+        }
+       ]
+}
